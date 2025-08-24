@@ -7,25 +7,24 @@ By the end of this guide, you will be able to monitor requests with **SigNoz** a
 
 ## 📂 Repository Structure
 
+
 sre-study-guide/
 │
 ├─ README.md
 ├─ chapters/
-│   ├─ 01\_http\_requests.md
-│   ├─ 02\_rest\_vs\_grpc\_vs\_graphql.md
-│   ├─ 03\_load\_balancing.md
-│   ├─ 04\_observability.md
-│   ├─ 05\_apm\_signoz.md
-│   └─ 06\_sre\_best\_practices.md
+│ ├─ 01_http_requests.md
+│ ├─ 02_rest_vs_grpc_vs_graphql.md
+│ ├─ 03_load_balancing.md
+│ ├─ 04_observability.md
+│ ├─ 05_apm_signoz.md
+│ └─ 06_sre_best_practices.md
 └─ exercises/
-├─ 01\_http\_requests\_exercises.md
-├─ 02\_rest\_vs\_grpc\_vs\_graphql\_exercises.md
-├─ 03\_load\_balancing\_exercises.md
-├─ 04\_observability\_exercises.md
-├─ 05\_apm\_signoz\_exercises.md
-└─ 06\_sre\_best\_practices\_exercises.md
-
-```
+├─ 01_http_requests_exercises.md
+├─ 02_rest_vs_grpc_vs_graphql_exercises.md
+├─ 03_load_balancing_exercises.md
+├─ 04_observability_exercises.md
+├─ 05_apm_signoz_exercises.md
+└─ 06_sre_best_practices_exercises.md
 
 ---
 
@@ -65,7 +64,3 @@ This guide is intended as a living document. Feel free to open issues or submit 
 ## 📌 Author
 Created by **Cleverson Rodrigues** — SRE professional passionate about reliability, observability, and teaching.  
 
----
-```
-
-Would you like me to also **generate the exercises as separate files** under the `/exercises` folder (expanded from the end-of-chapter exercises), so your repo looks fully structured from the start?
