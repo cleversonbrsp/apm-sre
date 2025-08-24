@@ -3,7 +3,7 @@
 ## 1. Convert the REST request `GET /users/42` into a GraphQL query.  
 
 <details>
-<summary>💡 Show Solution</summary>
+<summary>Show Solution</summary>
 
 ```graphql
 query {
@@ -22,7 +22,7 @@ Here, we query a `user` by ID and specify which fields we want returned (`id`, `
 ## 2. Compare REST and gRPC for a **chat application** that requires very high throughput. Which one would you choose and why?
 
 <details>
-<summary>💡 Show Solution</summary>
+<summary>Show Solution</summary>
 
 * **Choice:** gRPC.
 * **Why:**
@@ -36,7 +36,7 @@ Here, we query a `user` by ID and specify which fields we want returned (`id`, `
 ## 3. Explain a scenario where GraphQL is more efficient than REST.
 
 <details>
-<summary>💡 Show Solution</summary>
+<summary>Show Solution</summary>
 
 * Scenario: A **mobile app dashboard** that needs data about a user, their recent posts, and comments.
 * With REST: Requires multiple requests (`/user/42`, `/user/42/posts`, `/posts/:id/comments`).
@@ -47,7 +47,7 @@ Here, we query a `user` by ID and specify which fields we want returned (`id`, `
 ## 4. Identify benefits and drawbacks of using gRPC versus REST in a microservices architecture.
 
 <details>
-<summary>💡 Show Solution</summary>
+<summary>Show Solution</summary>
 
 **Benefits of gRPC:**
 
@@ -73,7 +73,7 @@ Here, we query a `user` by ID and specify which fields we want returned (`id`, `
 ## 5. Bonus: Design a small API (choose REST, gRPC, or GraphQL) for a library system (books, authors, borrowers).
 
 <details>
-<summary>💡 Show Solution</summary>
+<summary>Show Solution</summary>
 
 ### Option A – REST (example endpoints):
 
