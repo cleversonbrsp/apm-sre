@@ -1,16 +1,11 @@
-Great choice 🚀 Here’s a clean **README.md** for your repository that introduces the study guide and links all chapters as a progressive learning path:
-
-```markdown
 # 📘 SRE Study Guide: Understanding Requests & Observability
 
 Welcome to the **SRE Study Guide**!  
 This repository is designed to help you progressively learn about HTTP requests, APIs, load balancing, observability, and SRE best practices.  
 By the end of this guide, you will be able to monitor requests with **SigNoz** and apply this knowledge in your career as an SRE.
 
----
 
 ## 📂 Repository Structure
-```
 
 sre-study-guide/
 │
