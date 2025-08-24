@@ -1,4 +1,3 @@
-````markdown
 # Solutions – Chapter 1: HTTP Requests & Responses
 
 ---
