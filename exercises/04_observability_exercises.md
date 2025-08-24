@@ -3,7 +3,7 @@
 ## 1. List and explain the **three pillars of observability**.
 
 <details>
-<summary>💡 Show Solution</summary>
+<summary>Show Solution</summary>
 
 1. **Metrics**: Numeric data over time, like request rate, latency, and error rate. Useful for monitoring trends and triggering alerts.  
 2. **Logs**: Text records of events, errors, or transactions. Useful for detailed investigation and debugging.  
@@ -13,7 +13,7 @@
 ## 2. Trace a sample HTTP request across **three microservices** and identify where you would check metrics, logs, and traces.
 
 <details>
-<summary>💡 Show Solution</summary>
+<summary>Show Solution</summary>
 
 - **Scenario:** User requests `/checkout` in an e-commerce app.  
   - **Microservice A:** API Gateway → Check **metrics** (request rate, latency)  
@@ -26,7 +26,7 @@
 ## 3. Explain why logs alone are not enough to debug issues in a distributed system.
 
 <details>
-<summary>💡 Show Solution</summary>
+<summary>Show Solution</summary>
 
 - Logs are **local** to each service and can be overwhelming in large systems.  
 - They don’t show the **end-to-end request flow**, making it hard to correlate events across services.  
@@ -36,7 +36,7 @@
 ## 4. Imagine a web app suddenly becomes slow. Which observability tool (metrics, logs, or traces) would you check first and why?
 
 <details>
-<summary>💡 Show Solution</summary>
+<summary>Show Solution</summary>
 
 - **First check:** **Metrics**  
   - Reason: Metrics provide a quick overview of which service is slow (e.g., increased latency or error rate).  
@@ -49,9 +49,9 @@
 ## 5. Bonus: Write down 3 PromQL queries you could use to troubleshoot request latency.
 
 <details>
-<summary>💡 Show Solution</summary>
+<summary>Show Solution</summary>
 
-1. **Average response time per endpoint**:  
+1. **Average response time per endpoint**:
 ```
 
 avg(http\_request\_duration\_seconds\_bucket) by (handler)
