@@ -3,7 +3,7 @@
 ## 1. Install **SigNoz locally** using Docker or Kubernetes.
 
 <details>
-<summary>💡 Show Solution</summary>
+<summary>Show Solution</summary>
 
 **Docker Example:**
 ```bash
@@ -31,7 +31,7 @@ After installation, access the UI at `http://localhost:3301` (Docker) or the Kub
 ## 2. Send a sample trace from a **demo application** to SigNoz.
 
 <details>
-<summary>💡 Show Solution</summary>
+<summary>Show Solution</summary>
 
 * Use OpenTelemetry SDK in your app (Node.js example):
 
@@ -54,7 +54,7 @@ provider.addSpanProcessor(new SimpleSpanProcessor(exporter));
 ## 3. Compare metrics of a **slow vs. fast request** using SigNoz dashboards.
 
 <details>
-<summary>💡 Show Solution</summary>
+<summary>Show Solution</summary>
 
 * Navigate to **Dashboards → Performance** in SigNoz.
 * Observe metrics like **request latency**, **throughput**, and **error rate**.
@@ -67,7 +67,7 @@ provider.addSpanProcessor(new SimpleSpanProcessor(exporter));
 ## 4. Identify a bottleneck in a multi-service application using SigNoz traces.
 
 <details>
-<summary>💡 Show Solution</summary>
+<summary>Show Solution</summary>
 
 1. Open **Traces** in SigNoz.
 2. Filter by the request you want to investigate.
@@ -80,7 +80,7 @@ provider.addSpanProcessor(new SimpleSpanProcessor(exporter));
 ## 5. Bonus: Research how SigNoz differs from **Datadog** or **New Relic** in terms of cost and features.
 
 <details>
-<summary>💡 Show Solution</summary>
+<summary>Show Solution</summary>
 
 * **SigNoz:**
 
