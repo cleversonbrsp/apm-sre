@@ -1,7 +1,5 @@
 # Solutions – Chapter 1: HTTP Requests & Responses
 
----
-
 ## 1. Explain the difference between `GET` and `POST` methods. Provide an example for each.
 <details>
 <summary>Show Solution</summary>
@@ -29,8 +27,6 @@
 
 </details>
 
----
-
 ## 2. Write an HTTP request to fetch user details from `/users/42`.
 
 <details>
@@ -44,8 +40,6 @@ Accept: application/json
 
 </details>
 
----
-
 ## 3. Identify the status code for:
 
 <details>
@@ -55,8 +49,6 @@ Accept: application/json
 * **Server Error** → `500 Internal Server Error`
 
 </details>
-
----
 
 ## 4. Imagine you are debugging a slow login request. Which parts of the HTTP request/response would you inspect first and why?
 
@@ -70,8 +62,6 @@ Accept: application/json
 5. **Logs on the server** → to identify bottlenecks like slow database queries.
 
 </details>
-
----
 
 ## 5. Bonus: Draw a diagram showing how a browser sends a request to a server and receives a response.
 
