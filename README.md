@@ -7,7 +7,7 @@ By the end of this guide, you will be able to monitor requests with **SigNoz** a
 
 ## 📂 Repository Structure
 
-
+```bash
 sre-study-guide/
 │
 ├─ README.md
@@ -25,7 +25,7 @@ sre-study-guide/
 ├─ 04_observability_exercises.md
 ├─ 05_apm_signoz_exercises.md
 └─ 06_sre_best_practices_exercises.md
-
+```
 ---
 
 ## 📖 Table of Contents
