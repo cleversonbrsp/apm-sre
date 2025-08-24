@@ -11,7 +11,7 @@
   ```http
   GET /products?category=books HTTP/1.1
   Host: example.com
-````
+  ```
 
 * **POST**: Sends data to the server, usually to create or update a resource. The data is included in the request body.
   Example:
@@ -91,6 +91,3 @@ Browser (Client) -----> HTTP Request -----> Server
 3. The server sends back an HTTP response (status code, headers, body).
 
 </details>
-```
-
-Do you want me to also make a **student version** (just the exercises) and a **solutions version** (with hidden answers) so you can keep both in your repo?
