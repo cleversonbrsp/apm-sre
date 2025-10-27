@@ -10,21 +10,21 @@ By the end of this guide, you will be able to monitor requests with **SigNoz** a
 ```bash
 sre-study-guide/
 │
-├─ README.md
-├─ chapters/
-│ ├─ 01_http_requests.md
-│ ├─ 02_rest_vs_grpc_vs_graphql.md
-│ ├─ 03_load_balancing.md
-│ ├─ 04_observability.md
-│ ├─ 05_apm_signoz.md
-│ └─ 06_sre_best_practices.md
-└─ exercises/
-├─ 01_http_requests_exercises.md
-├─ 02_rest_vs_grpc_vs_graphql_exercises.md
-├─ 03_load_balancing_exercises.md
-├─ 04_observability_exercises.md
-├─ 05_apm_signoz_exercises.md
-└─ 06_sre_best_practices_exercises.md
+├── README.md
+├── chapters/
+│ ├── 01_http_requests.md
+│ ├── 02_rest_vs_grpc_vs_graphql.md
+│ ├── 03_load_balancing.md
+│ ├── 04_observability.md
+│ ├── 05_apm_signoz.md
+│ └── 06_sre_best_practices.md
+└── exercises/
+├── 01_http_requests_exercises.md
+├── 02_rest_vs_grpc_vs_graphql_exercises.md
+├── 03_load_balancing_exercises.md
+├── 04_observability_exercises.md
+├── 05_apm_signoz_exercises.md
+└── 06_sre_best_practices_exercises.md
 ```
 ---
 
@@ -50,6 +50,33 @@ After completing this study guide, you will be able to:
 
 ---
 
+## 🧪 Labs
+
+### Lab 1: Node.js Application with OpenTelemetry & SigNoz
+
+**Get hands-on experience with a complete Node.js application!**
+
+The lab includes:
+- ✅ Complete e-commerce API with user registrations, orders, and payments
+- ✅ OpenTelemetry instrumentation for traces and custom metrics
+- ✅ Docker Compose setup for easy deployment
+- ✅ SigNoz integration for visualization
+- ✅ Ready-to-run code with no complex setup
+
+**Quick Start:**
+1. Follow the instructions in [labs/01.md](labs/01.md)
+2. Run `docker-compose up --build`
+3. Access your instrumented app at http://localhost:3000
+4. View traces and metrics in SigNoz at http://localhost:3301
+
+**Perfect for:**
+- Learning OpenTelemetry instrumentation
+- Understanding distributed tracing
+- Practicing custom metrics creation
+- Setting up APM with SigNoz
+
+---
+
 ## 📝 Exercises
 Each chapter includes exercises to reinforce learning.  
 For deeper practice, check the [exercises/](exercises) folder.  
@@ -57,7 +84,7 @@ For deeper practice, check the [exercises/](exercises) folder.
 ---
 
 ## 🤝 Contributions
-This guide is intended as a living document. Feel free to open issues or submit pull requests if you’d like to improve or expand the content.  
+This guide is intended as a living document. Feel free to open issues or submit pull requests if you'd like to improve or expand the content.  
 
 ---
 
