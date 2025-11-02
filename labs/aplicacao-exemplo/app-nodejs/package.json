@@ -1,0 +1,31 @@
+{
+  "name": "signoz-example-nodejs",
+  "version": "1.0.0",
+  "description": "Aplicação Node.js de exemplo instrumentada com OpenTelemetry para SigNoz",
+  "main": "server.js",
+  "scripts": {
+    "start": "node -r ./instrumentation.js server.js",
+    "dev": "nodemon -r ./instrumentation.js server.js"
+  },
+  "keywords": [
+    "opentelemetry",
+    "signoz",
+    "observability",
+    "nodejs"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "@opentelemetry/api": "^1.4.1",
+    "@opentelemetry/auto-instrumentations-node": "^0.39.4",
+    "@opentelemetry/exporter-trace-otlp-grpc": "^0.41.2",
+    "@opentelemetry/resources": "^1.15.2",
+    "@opentelemetry/sdk-node": "^0.41.2",
+    "@opentelemetry/semantic-conventions": "^1.15.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}
+

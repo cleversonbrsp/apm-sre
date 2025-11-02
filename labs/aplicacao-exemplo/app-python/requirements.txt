@@ -1,0 +1,18 @@
+# Aplicação Python de exemplo com OpenTelemetry para SigNoz
+
+# Framework web
+Flask==3.0.0
+
+# OpenTelemetry
+opentelemetry-api==1.21.0
+opentelemetry-sdk==1.21.0
+opentelemetry-exporter-otlp-proto-grpc==1.21.0
+
+# Auto-instrumentação
+opentelemetry-instrumentation-flask==0.42b0
+opentelemetry-instrumentation-requests==0.42b0
+
+# Instrumentação adicional (opcional)
+opentelemetry-instrumentation-sqlite3==0.42b0
+opentelemetry-instrumentation-redis==0.42b0
+
