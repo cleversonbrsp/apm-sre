@@ -4,7 +4,6 @@ Welcome to the **SRE Study Guide**!
 This repository is designed to help you progressively learn about HTTP requests, APIs, load balancing, observability, and SRE best practices.  
 By the end of this guide, you will be able to monitor requests with **SigNoz** and apply this knowledge in your career as an SRE.
 
-
 ##  Repository Structure
 
 ```bash
