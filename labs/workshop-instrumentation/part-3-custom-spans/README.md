@@ -1,10 +1,10 @@
-# 🎨 Part 3: Creating Custom Spans
+#  Part 3: Creating Custom Spans
 
 **Goal:** Extend your instrumentation with spans that map directly to your business logic.
 
 ---
 
-## 🎯 Why Add Custom Spans?
+##  Why Add Custom Spans?
 
 Auto-instrumentation already traces HTTP handlers, database drivers, queues, and more—but it does not know how your domain works. When you need visibility into:
 
@@ -18,7 +18,7 @@ Auto-instrumentation already traces HTTP handlers, database drivers, queues, and
 
 ---
 
-## 🟢 Node.js
+##  Node.js
 
 ### Step 3.1 – Import the OpenTelemetry API
 
@@ -97,11 +97,11 @@ app.post('/tasks', (req, res) => {
     };
 
     tasks.push(task);
-    console.log(`✅ Task created: ${title}`);
+    console.log(` Task created: ${title}`);
 
     res.status(201).json(task);
   } catch (error) {
-    console.error(`❌ Validation error: ${error.message}`);
+    console.error(` Validation error: ${error.message}`);
     return res.status(400).json({ error: error.message });
   }
 });
@@ -221,7 +221,7 @@ POST /tasks/batch                    [201] 250ms
 
 ---
 
-## 🐍 Python
+##  Python
 
 ### Step 3.1 – Import the OpenTelemetry API
 
@@ -292,11 +292,11 @@ def create_task():
         tasks.append(task)
         next_id += 1
 
-        print(f'✅ Task created: {title}')
+        print(f' Task created: {title}')
         return jsonify(task), 201
 
     except ValueError as exc:
-        print(f'❌ Validation error: {exc}')
+        print(f' Validation error: {exc}')
         return jsonify({'error': str(exc)}), 400
 ```
 
@@ -382,7 +382,7 @@ curl -X POST http://localhost:5001/tasks/batch \
 
 ---
 
-## ✅ Checklist
+##  Checklist
 
 - [ ] Imported the OpenTelemetry API  
 - [ ] Created a helper that emits custom spans  
@@ -394,18 +394,18 @@ curl -X POST http://localhost:5001/tasks/batch \
 
 ---
 
-## 🎓 What You Learned
+##  What You Learned
 
-✅ Creating custom spans  
-✅ Attaching attributes for context  
-✅ Modeling parent/child span hierarchies  
-✅ Recording exceptions and marking spans as errors  
-✅ Using `try/finally` (Node.js) and `with` (Python) safely  
-✅ Deciding when to use custom spans vs. auto instrumentation  
+ Creating custom spans  
+ Attaching attributes for context  
+ Modeling parent/child span hierarchies  
+ Recording exceptions and marking spans as errors  
+ Using `try/finally` (Node.js) and `with` (Python) safely  
+ Deciding when to use custom spans vs. auto instrumentation  
 
 ---
 
-## 🚀 Next Step
+##  Next Step
 
 You now control your observability story. Next up: **richer attributes** to make traces even more valuable.
 
@@ -413,7 +413,7 @@ You now control your observability story. Next up: **richer attributes** to make
 
 ---
 
-## 💡 Tips
+##  Tips
 
 1. Wrap critical business logic in custom spans  
 2. Add attributes that answer debugging questions  

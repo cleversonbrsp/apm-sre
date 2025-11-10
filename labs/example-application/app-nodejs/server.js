@@ -1,5 +1,5 @@
 /**
- * 🌐 SAMPLE NODE.JS + EXPRESS APPLICATION
+ *  SAMPLE NODE.JS + EXPRESS APPLICATION
  *
  * This API demonstrates:
  * - REST endpoints
@@ -15,7 +15,7 @@ const app = express();
 app.use(express.json());
 
 /**
- * 📝 NOTE: Instrumentation is loaded before this file runs.
+ *  NOTE: Instrumentation is loaded before this file runs.
  * Command: node -r ./instrumentation.js server.js
  *
  * That means every HTTP request is already traced automatically!
@@ -39,13 +39,13 @@ let products = [
 // ============================================================================
 
 /**
- * 🏠 ROOT ENDPOINT
+ *  ROOT ENDPOINT
  *
  * Returns a quick overview of the API
  */
 app.get('/', (req, res) => {
   res.json({
-    message: '🚀 Node.js API instrumented with OpenTelemetry',
+    message: ' Node.js API instrumented with OpenTelemetry',
     version: '1.0.0',
     endpoints: {
       health: 'GET /api/health',
@@ -64,7 +64,7 @@ app.get('/', (req, res) => {
 });
 
 /**
- * 🏥 HEALTH CHECK
+ *  HEALTH CHECK
  *
  * Basic endpoint to confirm the service is alive.
  * Automatically traced by OpenTelemetry!
@@ -78,13 +78,13 @@ app.get('/api/health', (req, res) => {
 });
 
 /**
- * 👥 LIST USERS
+ *  LIST USERS
  *
  * Returns every user in the mock database.
  * Great for observing successful traces.
  */
 app.get('/api/users', (req, res) => {
-  console.log('📋 Listing all users');
+  console.log(' Listing all users');
 
   // Simulate a database latency
   setTimeout(() => {
@@ -96,7 +96,7 @@ app.get('/api/users', (req, res) => {
 });
 
 /**
- * 👤 GET USER BY ID
+ *  GET USER BY ID
  *
  * Returns a single user and showcases custom attributes.
  */
@@ -104,7 +104,7 @@ app.get('/api/users/:id', (req, res) => {
   const id = parseInt(req.params.id, 10);
   const user = users.find(u => u.id === id);
 
-  console.log(`🔍 Fetching user ID: ${id}`);
+  console.log(` Fetching user ID: ${id}`);
 
   if (!user) {
     return res.status(404).json({
@@ -117,14 +117,14 @@ app.get('/api/users/:id', (req, res) => {
 });
 
 /**
- * ➕ CREATE USER
+ *  CREATE USER
  *
  * Adds a new user and illustrates write operations.
  */
 app.post('/api/users', (req, res) => {
   const { name, email, role } = req.body;
 
-  console.log(`➕ Creating user: ${name} (${email})`);
+  console.log(` Creating user: ${name} (${email})`);
 
   if (!name || !email) {
     return res.status(400).json({
@@ -148,16 +148,16 @@ app.post('/api/users', (req, res) => {
 });
 
 /**
- * 🛍️ LIST PRODUCTS (WITH FAILURES)
+ *  LIST PRODUCTS (WITH FAILURES)
  *
  * Randomly fails to demonstrate error tracing.
  */
 app.get('/api/products', (req, res) => {
-  console.log('🛍️ Listing products…');
+  console.log(' Listing products…');
 
   // 20% failure rate to demonstrate errors
   if (Math.random() < 0.2) {
-    console.error('❌ Failed to fetch products from the database');
+    console.error(' Failed to fetch products from the database');
     return res.status(500).json({
       error: 'Internal error fetching products',
       message: 'Database connection failed',
@@ -171,19 +171,19 @@ app.get('/api/products', (req, res) => {
 });
 
 /**
- * 🐌 SLOW ENDPOINT
+ *  SLOW ENDPOINT
  *
  * Simulates a slow operation (e.g., complex query or third-party call)
  * Perfect to observe latency in traces.
  */
 app.get('/api/slow', async (req, res) => {
-  console.log('🐌 Starting slow operation…');
+  console.log(' Starting slow operation…');
 
   // Simulate a 1–3 second delay
   const delay = 1000 + Math.random() * 2000;
   await new Promise(resolve => setTimeout(resolve, delay));
 
-  console.log(`✅ Slow operation completed in ${delay.toFixed(0)}ms`);
+  console.log(` Slow operation completed in ${delay.toFixed(0)}ms`);
 
   res.json({
     message: 'Slow operation completed',
@@ -192,7 +192,7 @@ app.get('/api/slow', async (req, res) => {
 });
 
 /**
- * 🔗 REDIRECT EXAMPLE
+ *  REDIRECT EXAMPLE
  *
  * Produces multiple spans to illustrate redirects.
  */
@@ -205,7 +205,7 @@ app.get('/api/redirect-demo', (req, res) => {
 // ============================================================================
 
 app.use((err, req, res, next) => {
-  console.error('❌ Unhandled error:', err);
+  console.error(' Unhandled error:', err);
   res.status(500).json({
     error: 'Internal server error',
     message: err.message,
@@ -219,9 +219,9 @@ app.use((err, req, res, next) => {
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
-  console.log('\n🚀 Server started!');
-  console.log(`📡 Listening at: http://localhost:${PORT}`);
-  console.log('\n📋 Available endpoints:');
+  console.log('\n Server started!');
+  console.log(` Listening at: http://localhost:${PORT}`);
+  console.log('\n Available endpoints:');
   console.log('   GET  /api/health              - Health check');
   console.log('   GET  /api/users               - List users');
   console.log('   GET  /api/users/:id           - Get user by ID');
@@ -229,7 +229,7 @@ app.listen(PORT, () => {
   console.log('   GET  /api/products            - List products (20% error rate)');
   console.log('   GET  /api/slow                - Simulated slow call');
   console.log('   GET  /api/redirect-demo       - Redirect example');
-  console.log('\n💡 Tip: Head over to http://localhost:8080 to explore SigNoz dashboards!\n');
+  console.log('\n Tip: Head over to http://localhost:8080 to explore SigNoz dashboards!\n');
 });
 
 // ============================================================================
@@ -237,12 +237,12 @@ app.listen(PORT, () => {
 // ============================================================================
 
 process.on('SIGTERM', () => {
-  console.log('\n🛑 Received SIGTERM, shutting down gracefully...');
+  console.log('\n Received SIGTERM, shutting down gracefully...');
   process.exit(0);
 });
 
 /**
- * 📚 OBSERVABILITY CONCEPTS DEMONSTRATED
+ *  OBSERVABILITY CONCEPTS DEMONSTRATED
  *
  * 1. Automatic traces for every HTTP request
  * 2. Spans for application work (DB delays, slow ops, etc.)
@@ -251,6 +251,6 @@ process.on('SIGTERM', () => {
  * 5. Automatic HTTP context propagation
  * 6. Structured logs
  *
- * 🎯 All of this with zero manual tracing code inside each endpoint—OpenTelemetry does the heavy lifting!
+ *  All of this with zero manual tracing code inside each endpoint—OpenTelemetry does the heavy lifting!
  */
 

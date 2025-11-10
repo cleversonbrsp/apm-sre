@@ -1,15 +1,15 @@
-# 🐍 Python Sample Application - SigNoz
+#  Python Sample Application - SigNoz
 
 Python + Flask application fully instrumented with OpenTelemetry to showcase observability with SigNoz.
 
-## 📋 Requirements
+##  Requirements
 
 - Python 3.8+
 - pip
 - SigNoz running (see `/signoz/deploy/docker`)
 - OpenTelemetry Collector running
 
-## 🚀 Setup and Execution
+##  Setup and Execution
 
 ### 1. Create a Virtual Environment (Recommended)
 
@@ -82,17 +82,17 @@ Explore:
 - **Service Map** – Visualize dependencies
 - **Metrics** – Performance, latency, errors
 
-## 📁 File Structure
+##  File Structure
 
 ```
 app-python/
 ├── requirements.txt      # Python dependencies
-├── instrumentation.py    # ⚡ OpenTelemetry configuration
+├── instrumentation.py    #  OpenTelemetry configuration
 ├── app.py                # Flask application
 └── README.md             # This file
 ```
 
-## 🔍 How the Instrumentation Works
+##  How the Instrumentation Works
 
 ### Auto Instrumentation
 
@@ -103,10 +103,10 @@ import instrumentation  # noqa: F401
 
 loads the `instrumentation.py` module **before** the Flask app starts. That ensures:
 
-✅ **All HTTP requests** are automatically traced  
-✅ **Outgoing HTTP calls** are instrumented  
-✅ **Performance metrics** are collected  
-✅ **Context is propagated** across operations  
+ **All HTTP requests** are automatically traced  
+ **Outgoing HTTP calls** are instrumented  
+ **Performance metrics** are collected  
+ **Context is propagated** across operations  
 
 ### Configuration in instrumentation.py
 
@@ -133,7 +133,7 @@ def setup_instrumentation():
     RequestsInstrumentor().instrument()
 ```
 
-## 🎯 Available Endpoints
+##  Available Endpoints
 
 | Method | Endpoint | Description | Observability Notes |
 |--------|----------|-------------|---------------------|
@@ -145,7 +145,7 @@ def setup_instrumentation():
 | GET | `/api/random-error` | Random error | Different failure types |
 | GET | `/api/slow` | Slow operation | Latency metrics |
 
-## 📊 Telemetry Types Generated
+##  Telemetry Types Generated
 
 ### 1. Traces
 
@@ -173,7 +173,7 @@ Every span includes:
 - `service.name`: signoz-example-python
 - `service.version`: 1.0.0
 
-## 🔧 Advanced Configuration
+##  Advanced Configuration
 
 ### Change Collector Endpoint
 
@@ -221,7 +221,7 @@ def custom_route():
         return jsonify(result)
 ```
 
-## 🐛 Troubleshooting
+##  Troubleshooting
 
 ### Not seeing data in SigNoz
 
@@ -262,22 +262,22 @@ Flask uses debug mode by default in this example. Check:
 - OTel Collector logs: `docker logs signoz-otel-collector`
 - SigNoz UI at http://localhost:8080
 
-## 📚 Next Steps
+##  Next Steps
 
-1. ✅ Run the application and confirm data in SigNoz  
-2. 🔍 Exercise different endpoints to generate varied traces  
-3. 📊 Build dashboards in SigNoz  
-4. 🔔 Configure alerts for errors and latency  
-5. 🔧 Adapt the instrumentation to your own services  
+1.  Run the application and confirm data in SigNoz  
+2.  Exercise different endpoints to generate varied traces  
+3.  Build dashboards in SigNoz  
+4.  Configure alerts for errors and latency  
+5.  Adapt the instrumentation to your own services  
 
-## 🔗 Helpful Links
+##  Helpful Links
 
 - [OpenTelemetry Python](https://opentelemetry.io/docs/instrumentation/python/)
 - [SigNoz Docs](https://signoz.io/docs/)
 - [Flask Instrumentation](https://opentelemetry.io/docs/instrumentation/python/libraries/)
 - [OTLP Exporter](https://opentelemetry.io/docs/specs/otlp/)
 
-## 📝 Important Notes
+##  Important Notes
 
 ### Import Order
 

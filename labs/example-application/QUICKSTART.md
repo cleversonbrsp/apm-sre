@@ -1,14 +1,14 @@
-# 🚀 Quick Start Guide
+#  Quick Start Guide
 
-## ✅ You already have a working app!
+##  You already have a working app!
 
 Your Node.js application is already set up and running!
 
 ### Current Setup:
 - **Location**: `labs/example-application/app-nodejs/`
-- **Status**: Dependencies already installed ✅
+- **Status**: Dependencies already installed 
 - **App Running**: Check if port 3000 is in use
-- **SigNoz**: Running on http://localhost:8080 ✅
+- **SigNoz**: Running on http://localhost:8080 
 
 ### To Start the Application:
 
@@ -51,8 +51,8 @@ curl http://localhost:3000/api/products
 
 You were in the wrong directory! The `package.json` is inside `app-nodejs/` subdirectory.
 
-**Wrong**: `labs/example-application/` ❌
-**Right**: `labs/example-application/app-nodejs/` ✅
+**Wrong**: `labs/example-application/` 
+**Right**: `labs/example-application/app-nodejs/` 
 
 ### Need Help?
 
@@ -61,4 +61,4 @@ Check:
 - `app-nodejs/README.md` – Application documentation
 - `GUIA_INSTRUMENTACAO_DETALHADO.md` – Instrumentation details
 
-Happy monitoring! 📊
+Happy monitoring! 

@@ -1,20 +1,20 @@
-# ⚡ Part 2: Adding Instrumentation
+#  Part 2: Adding Instrumentation
 
 **Goal:** Wire OpenTelemetry into the application you created!
 
 ---
 
-## 🎯 What You’ll Do
+##  What You’ll Do
 
 1. Install OpenTelemetry dependencies  
 2. Create an instrumentation file  
 3. Configure the exporter  
 4. Load instrumentation before the app starts  
-5. View traces in SigNoz! 🎉
+5. View traces in SigNoz! 
 
 ---
 
-## 🟢 Node.js
+##  Node.js
 
 ### Step 2.1: Install Dependencies
 
@@ -43,7 +43,7 @@ const { OTLPTraceExporter } = require('@opentelemetry/exporter-trace-otlp-grpc')
 const { Resource } = require('@opentelemetry/resources');
 const { SemanticResourceAttributes } = require('@opentelemetry/semantic-conventions');
 
-console.log('🔧 Setting up OpenTelemetry…');
+console.log(' Setting up OpenTelemetry…');
 
 // STEP 1: Define resource metadata for your service
 const resource = new Resource({
@@ -73,14 +73,14 @@ const sdk = new NodeSDK({
 
 // STEP 4: Start collecting telemetry
 sdk.start();
-console.log('⚡ OpenTelemetry started!');
-console.log('📊 Sending traces to: http://localhost:4317');
-console.log('🔍 View telemetry at: http://localhost:8080\n');
+console.log(' OpenTelemetry started!');
+console.log(' Sending traces to: http://localhost:4317');
+console.log(' View telemetry at: http://localhost:8080\n');
 
 // STEP 5: Graceful shutdown
 process.on('SIGTERM', () => {
   sdk.shutdown()
-    .then(() => console.log('🔌 Telemetry stopped'))
+    .then(() => console.log(' Telemetry stopped'))
     .finally(() => process.exit(0));
 });
 ```
@@ -108,12 +108,12 @@ npm start
 You should see:
 
 ```
-🔧 Setting up OpenTelemetry…
-⚡ OpenTelemetry started!
-📊 Sending traces to: http://localhost:4317
-🔍 View telemetry at: http://localhost:8080
+ Setting up OpenTelemetry…
+ OpenTelemetry started!
+ Sending traces to: http://localhost:4317
+ View telemetry at: http://localhost:8080
 
-🚀 Server running at http://localhost:3001
+ Server running at http://localhost:3001
 ```
 
 ### Step 2.5: Generate Traffic
@@ -135,7 +135,7 @@ curl http://localhost:3001/tasks/export
 1. Open http://localhost:8080  
 2. Sign in if required  
 3. Click **“Traces”** in the sidebar  
-4. You should see the requests you just generated! 🎉
+4. You should see the requests you just generated! 
 
 **Open a trace to explore:**
 - Total duration  
@@ -146,7 +146,7 @@ curl http://localhost:3001/tasks/export
 
 ---
 
-## 🐍 Python
+##  Python
 
 ### Step 2.1: Install Dependencies
 
@@ -175,7 +175,7 @@ from opentelemetry.sdk.trace.export import BatchSpanProcessor
 from opentelemetry.instrumentation.flask import FlaskInstrumentor
 from opentelemetry.instrumentation.requests import RequestsInstrumentor
 
-print('🔧 Setting up OpenTelemetry…')
+print(' Setting up OpenTelemetry…')
 
 # STEP 1: Define the resource
 resource = Resource.create({
@@ -204,9 +204,9 @@ trace.set_tracer_provider(tracer_provider)
 FlaskInstrumentor().instrument()
 RequestsInstrumentor().instrument()
 
-print('⚡ OpenTelemetry started!')
-print('📊 Sending traces to: http://localhost:4317')
-print('🔍 View telemetry at: http://localhost:8080\n')
+print(' OpenTelemetry started!')
+print(' Sending traces to: http://localhost:4317')
+print(' View telemetry at: http://localhost:8080\n')
 ```
 
 ### Step 2.3: Update app.py
@@ -240,11 +240,11 @@ curl http://localhost:5001/tasks/export
 
 1. Open http://localhost:8080  
 2. Navigate to “Traces”  
-3. Inspect your new telemetry! 🎉
+3. Inspect your new telemetry! 
 
 ---
 
-## 🔍 What to Look For in SigNoz
+##  What to Look For in SigNoz
 
 ### Trace List
 
@@ -272,7 +272,7 @@ GET /tasks                           [200] 145ms
 
 ---
 
-## ✅ Checklist
+##  Checklist
 
 - [ ] OpenTelemetry dependencies installed  
 - [ ] `instrumentation.js/py` created  
@@ -283,18 +283,18 @@ GET /tasks                           [200] 145ms
 
 ---
 
-## 🎯 What You Learned
+##  What You Learned
 
-✅ How to install OpenTelemetry dependencies  
-✅ How to configure instrumentation  
-✅ How to load instrumentation BEFORE the app boots  
-✅ How auto-instrumentation works  
-✅ How to view traces in SigNoz  
-✅ How to interpret spans and attributes  
+ How to install OpenTelemetry dependencies  
+ How to configure instrumentation  
+ How to load instrumentation BEFORE the app boots  
+ How auto-instrumentation works  
+ How to view traces in SigNoz  
+ How to interpret spans and attributes  
 
 ---
 
-## 🤔 Practice Ideas
+##  Practice Ideas
 
 1. **Hit different endpoints** and observe the traces  
 2. **Trigger an error** by calling `/tasks/export` repeatedly  
@@ -303,12 +303,12 @@ GET /tasks                           [200] 145ms
 
 ---
 
-## 🚀 Next Step
+##  Next Step
 
 Auto-instrumentation is live!  
 What if you need visibility into custom business logic?
 
 **Continue with:** `../part-3-custom-spans/README.md`
 
-That’s where you’ll create your own spans! 🎉
+That’s where you’ll create your own spans! 
 

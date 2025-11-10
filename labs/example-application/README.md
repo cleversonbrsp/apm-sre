@@ -1,8 +1,8 @@
-# 🎯 Sample Applications Instrumented for SigNoz
+#  Sample Applications Instrumented for SigNoz
 
 This directory contains fully instrumented sample applications that send logs, metrics, and traces to SigNoz.
 
-## 📋 Index
+##  Index
 
 - [Node.js + Express](#nodejs--express)
 - [Python + Flask](#python--flask)
@@ -11,7 +11,7 @@ This directory contains fully instrumented sample applications that send logs, m
 
 ---
 
-## 🟢 Node.js + Express
+##  Node.js + Express
 
 ### Application Structure
 
@@ -19,7 +19,7 @@ This directory contains fully instrumented sample applications that send logs, m
 app-nodejs/
 ├── package.json          # Dependencies
 ├── server.js             # Main application
-├── instrumentation.js    # ⚡ OpenTelemetry instrumentation
+├── instrumentation.js    #  OpenTelemetry instrumentation
 ├── routes/
 │   └── api.js           # API routes
 └── README.md            # App-specific instructions
@@ -45,7 +45,7 @@ The application will run at http://localhost:3000
 
 ---
 
-## 🐍 Python + Flask
+##  Python + Flask
 
 ### Application Structure
 
@@ -53,7 +53,7 @@ The application will run at http://localhost:3000
 app-python/
 ├── requirements.txt      # Python dependencies
 ├── app.py                # Main application
-├── instrumentation.py    # ⚡ OpenTelemetry instrumentation
+├── instrumentation.py    #  OpenTelemetry instrumentation
 ├── routes/
 │   └── api.py           # API routes
 └── README.md            # App-specific instructions
@@ -79,7 +79,7 @@ The application will run at http://localhost:5000
 
 ---
 
-## 📚 Instrumentation Concepts
+##  Instrumentation Concepts
 
 ### 1. OpenTelemetry (OTEL)
 
@@ -93,17 +93,17 @@ The application will run at http://localhost:5000
 
 ### 2. The Three Pillars of Observability
 
-#### 📊 **LOGS**
+####  **LOGS**
 - **What**: Events happening within the application
 - **When to use**: Debug, auditing, flow tracking
 - **Example**: “User created”, “Payment processing error”
 
-#### 📈 **METRICS**
+####  **METRICS**
 - **What**: Numerical values measured over time
 - **When to use**: Performance and application health
 - **Example**: Requests per second, response time, CPU usage
 
-#### 🔍 **TRACES**
+####  **TRACES**
 - **What**: A request flowing through multiple services
 - **When to use**: Debugging issues in distributed systems
 - **Example**: Trace of an HTTP request across API, DB, cache
@@ -140,7 +140,7 @@ The application will run at http://localhost:5000
 
 ---
 
-## 🔧 How It Works
+##  How It Works
 
 ### Step 1: Install OpenTelemetry
 
@@ -174,12 +174,12 @@ The OpenTelemetry SDK must understand:
 ### Step 3: Auto Instrumentation
 
 Magic! OpenTelemetry automatically instruments:
-- ✅ HTTP libraries
-- ✅ Web frameworks (Express, Flask)
-- ✅ Database calls
-- ✅ Redis
-- ✅ Kafka
-- ✅ And many more!
+-  HTTP libraries
+-  Web frameworks (Express, Flask)
+-  Database calls
+-  Redis
+-  Kafka
+-  And many more!
 
 All without changing your application code.
 
@@ -192,15 +192,15 @@ Data is automatically sent to:
 
 ---
 
-## 🎓 Next Steps
+##  Next Steps
 
-1. ✅ Run the sample applications  
-2. ✅ Visit http://localhost:8080 to explore SigNoz  
-3. ✅ Inspect Traces, Metrics, and Logs  
-4. 🔧 Adapt the instrumentation to your services  
-5. 📚 Read the [official documentation](https://signoz.io/docs/)  
+1.  Run the sample applications  
+2.  Visit http://localhost:8080 to explore SigNoz  
+3.  Inspect Traces, Metrics, and Logs  
+4.  Adapt the instrumentation to your services  
+5.  Read the [official documentation](https://signoz.io/docs/)  
 
-## 📖 Additional Resources
+##  Additional Resources
 
 - [OpenTelemetry Docs](https://opentelemetry.io/docs/)
 - [SigNoz Instrumentation Guide](https://signoz.io/docs/instrumentation/)

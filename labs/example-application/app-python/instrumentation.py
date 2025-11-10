@@ -1,5 +1,5 @@
 """
-⚡ OPENTELEMETRY INSTRUMENTATION FOR SIGNOZ – PYTHON
+ OPENTELEMETRY INSTRUMENTATION FOR SIGNOZ – PYTHON
 
 This module automatically configures collection of:
 - Traces (request lifecycles)
@@ -32,7 +32,7 @@ from opentelemetry.instrumentation.requests import RequestsInstrumentor
 
 def setup_instrumentation():
     """
-    🔧 Configure the OpenTelemetry SDK.
+     Configure the OpenTelemetry SDK.
     """
 
     # ----------------------------------------------------------------------------
@@ -101,9 +101,9 @@ def setup_instrumentation():
     # SUCCESS MESSAGE
     # ----------------------------------------------------------------------------
 
-    print("⚡ OpenTelemetry SDK initialized")
-    print("📊 Sending traces and metrics to: http://localhost:4317")
-    print("🔍 View telemetry at: http://localhost:8080\n")
+    print(" OpenTelemetry SDK initialized")
+    print(" Sending traces and metrics to: http://localhost:4317")
+    print(" View telemetry at: http://localhost:8080\n")
 
 
 # ----------------------------------------------------------------------------
@@ -113,7 +113,7 @@ setup_instrumentation()
 
 
 """
-📚 KEY CONCEPTS
+ KEY CONCEPTS
 
 1. TRACE: Tracks a single request through your system
 2. SPAN: A timed unit of work within a trace (DB call, external API, etc.)
@@ -121,14 +121,14 @@ setup_instrumentation()
 4. ATTRIBUTE: Metadata attached to spans/traces
 5. CONTEXT: Propagates tracing information across service boundaries
 
-🎯 WHAT YOU GAIN
+ WHAT YOU GAIN
 
-- 🔍 Traces: Observe exactly how each request flows through the app
-- 📊 Metrics: Monitor performance, throughput, and errors
-- 🐛 Debugging: Quickly pinpoint bottlenecks or failures
-- 📈 Alerting: Build automated alerts in SigNoz
+-  Traces: Observe exactly how each request flows through the app
+-  Metrics: Monitor performance, throughput, and errors
+-  Debugging: Quickly pinpoint bottlenecks or failures
+-  Alerting: Build automated alerts in SigNoz
 
-🚀 NEXT STEPS
+ NEXT STEPS
 
 1. pip install -r requirements.txt
 2. python app.py

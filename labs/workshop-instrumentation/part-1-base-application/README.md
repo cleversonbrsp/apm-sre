@@ -1,21 +1,21 @@
-# 📦 Part 1: Build the Base Application
+#  Part 1: Build the Base Application
 
 **Goal:** Create a simple web application with NO instrumentation (yet!)
 
 ---
 
-## 🎯 What We Will Build
+##  What We Will Build
 
 A very small TODO management API with:
-- ✅ List tasks
-- ✅ Create tasks
-- ✅ Mark a task as completed
-- ✅ Simulated slow operations
-- ✅ Simulated failures
+-  List tasks
+-  Create tasks
+-  Mark a task as completed
+-  Simulated slow operations
+-  Simulated failures
 
 ---
 
-## 🟢 Option 1: Node.js
+##  Option 1: Node.js
 
 ### Step 1.1: Create a directory
 
@@ -61,7 +61,7 @@ let nextId = 3;
 
 // List all tasks
 app.get('/tasks', (req, res) => {
-  console.log('📋 Listing tasks');
+  console.log(' Listing tasks');
   res.json(tasks);
 });
 
@@ -80,7 +80,7 @@ app.post('/tasks', (req, res) => {
   };
   
   tasks.push(task);
-  console.log(`✅ Task created: ${title}`);
+  console.log(` Task created: ${title}`);
   
   res.status(201).json(task);
 });
@@ -95,29 +95,29 @@ app.put('/tasks/:id/complete', (req, res) => {
   }
   
   task.completed = true;
-  console.log(`✓ Task completed: ${task.title}`);
+  console.log(` Task completed: ${task.title}`);
   
   res.json(task);
 });
 
 // Slow operation (simulate external call)
 app.get('/tasks/sync', async (req, res) => {
-  console.log('🔄 Syncing tasks (slow operation)…');
+  console.log(' Syncing tasks (slow operation)…');
   
   // Simulate 2-second delay
   await new Promise(resolve => setTimeout(resolve, 2000));
   
-  console.log('✅ Sync complete');
+  console.log(' Sync complete');
   res.json({ message: 'Tasks synced', count: tasks.length });
 });
 
 // Endpoint with simulated failure
 app.get('/tasks/export', (req, res) => {
-  console.log('📤 Exporting tasks…');
+  console.log(' Exporting tasks…');
   
   // Fail 30% of the time
   if (Math.random() < 0.3) {
-    console.error('❌ Error exporting tasks');
+    console.error(' Error exporting tasks');
     return res.status(500).json({ error: 'Failed to connect to export service' });
   }
   
@@ -130,7 +130,7 @@ app.get('/tasks/export', (req, res) => {
 // Root route
 app.get('/', (req, res) => {
   res.json({
-    message: '📝 Tasks API',
+    message: ' Tasks API',
     endpoints: {
       'GET /tasks': 'List tasks',
       'POST /tasks': 'Create task',
@@ -148,14 +148,14 @@ app.get('/', (req, res) => {
 const PORT = 3001;
 
 app.listen(PORT, () => {
-  console.log(`\n🚀 Server running at http://localhost:${PORT}`);
-  console.log('\n📋 Available endpoints:');
+  console.log(`\n Server running at http://localhost:${PORT}`);
+  console.log('\n Available endpoints:');
   console.log('   GET  /tasks              - List tasks');
   console.log('   POST /tasks              - Create task');
   console.log('   PUT  /tasks/:id/complete - Mark as completed');
   console.log('   GET  /tasks/sync         - Sync (slow)');
   console.log('   GET  /tasks/export       - Export (may fail)');
-  console.log('\n💡 This application is NOT instrumented yet!\n');
+  console.log('\n This application is NOT instrumented yet!\n');
 });
 ```
 
@@ -190,7 +190,7 @@ curl http://localhost:3001/tasks/export
 
 ---
 
-## 🐍 Option 2: Python
+##  Option 2: Python
 
 ### Step 1.1: Create a directory
 
@@ -239,7 +239,7 @@ next_id = 3
 @app.route('/')
 def home():
     return jsonify({
-        'message': '📝 Tasks API',
+        'message': ' Tasks API',
         'endpoints': {
             'GET /tasks': 'List tasks',
             'POST /tasks': 'Create task',
@@ -251,7 +251,7 @@ def home():
 
 @app.route('/tasks', methods=['GET'])
 def list_tasks():
-    print('📋 Listing tasks')
+    print(' Listing tasks')
     return jsonify(tasks)
 
 @app.route('/tasks', methods=['POST'])
@@ -273,7 +273,7 @@ def create_task():
     tasks.append(task)
     next_id += 1
     
-    print(f'✅ Task created: {title}')
+    print(f' Task created: {title}')
     return jsonify(task), 201
 
 @app.route('/tasks/<int:task_id>/complete', methods=['PUT'])
@@ -284,18 +284,18 @@ def complete_task(task_id):
         return jsonify({'error': 'Task not found'}), 404
     
     task['completed'] = True
-    print(f'✓ Task completed: {task["title"]}')
+    print(f' Task completed: {task["title"]}')
     
     return jsonify(task)
 
 @app.route('/tasks/sync', methods=['GET'])
 def sync_tasks():
-    print('🔄 Syncing tasks (slow operation)…')
+    print(' Syncing tasks (slow operation)…')
     
     # Simulate a 2 second delay
     time.sleep(2)
     
-    print('✅ Sync complete')
+    print(' Sync complete')
     return jsonify({
         'message': 'Tasks synced',
         'count': len(tasks)
@@ -303,11 +303,11 @@ def sync_tasks():
 
 @app.route('/tasks/export', methods=['GET'])
 def export_tasks():
-    print('📤 Exporting tasks…')
+    print(' Exporting tasks…')
     
     # 30% failure chance
     if random.random() < 0.3:
-        print('❌ Error exporting tasks')
+        print(' Error exporting tasks')
         return jsonify({'error': 'Failed to connect to export service'}), 500
     
     return jsonify({
@@ -320,14 +320,14 @@ def export_tasks():
 # ============================================================================
 
 if __name__ == '__main__':
-    print('\n🚀 Server running at http://localhost:5001')
-    print('\n📋 Available endpoints:')
+    print('\n Server running at http://localhost:5001')
+    print('\n Available endpoints:')
     print('   GET  /tasks              - List tasks')
     print('   POST /tasks              - Create task')
     print('   PUT  /tasks/<id>/complete - Mark as completed')
     print('   GET  /tasks/sync         - Sync (slow)')
     print('   GET  /tasks/export       - Export (may fail)')
-    print('\n💡 This application is NOT instrumented yet!\n')
+    print('\n This application is NOT instrumented yet!\n')
     
     app.run(host='0.0.0.0', port=5001, debug=True)
 ```
@@ -361,7 +361,7 @@ curl http://localhost:5001/tasks/export
 
 ---
 
-## ✅ Checklist
+##  Checklist
 
 - [ ] Application created
 - [ ] Dependencies installed
@@ -371,29 +371,29 @@ curl http://localhost:5001/tasks/export
 
 ---
 
-## 🎯 Key Takeaways
+##  Key Takeaways
 
 ### What We Have So Far
 
-✅ A working web application  
-✅ Multiple endpoints  
-✅ Both synchronous and asynchronous operations  
-✅ Error handling  
-✅ Console logs  
+ A working web application  
+ Multiple endpoints  
+ Both synchronous and asynchronous operations  
+ Error handling  
+ Console logs  
 
 ### What We DON’T Have Yet
 
-❌ No visibility into traces  
-❌ No latency measurements  
-❌ No way to follow requests across services  
-❌ Debugging is still painful  
-❌ No metrics inside SigNoz  
+ No visibility into traces  
+ No latency measurements  
+ No way to follow requests across services  
+ Debugging is still painful  
+ No metrics inside SigNoz  
 
 **Why?** Because we haven’t added instrumentation yet!
 
 ---
 
-## 🚀 Next Step
+##  Next Step
 
 Now that the app works, let’s instrument it.
 
@@ -401,11 +401,11 @@ Now that the app works, let’s instrument it.
 
 ---
 
-## 💡 Tips
+##  Tips
 
 1. **Keep the application running** so you can test after instrumentation  
 2. **Take note** of where traces would already be useful  
 3. **Think ahead:** Which operations do you want to monitor?  
 
-**In the next part you’ll add OpenTelemetry manually!** 🎉
+**In the next part you’ll add OpenTelemetry manually!** 
 

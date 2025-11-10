@@ -1,6 +1,6 @@
 # Detailed Error Log Analysis
 
-## 📋 Executive Summary
+##  Executive Summary
 
 **Primary Error:** `ERROR: target lists can have at most 1664 entries`
 
@@ -10,7 +10,7 @@
 
 ---
 
-## 🔍 Technical Glossary
+##  Technical Glossary
 
 ### 1. **PSQLException**
 - **What it is:** PostgreSQL JDBC driver exception class  
@@ -143,7 +143,7 @@
 
 ---
 
-## 🔄 Complete Error Flow (Bottom-Up)
+##  Complete Error Flow (Bottom-Up)
 
 ### Level 1: Database (Root Cause)
 ```
@@ -283,7 +283,7 @@ SimpleThreadPool worker thread
 
 ---
 
-## 🐛 Root Cause Analysis
+##  Root Cause Analysis
 
 ### Primary Error
 ```
@@ -323,7 +323,7 @@ hashMap.forEach((key, value) -> {
 
 ---
 
-## 🔧 Recommended Fixes
+##  Recommended Fixes
 
 ### 1. Convert EAGER to LAZY
 ```java
@@ -345,12 +345,12 @@ EntityDTO findDtoById(@Param("id") Long id);
 
 ### 4. Batch Loading Instead of N+1
 ```java
-// ❌ Inefficient – N+1 queries
+//  Inefficient – N+1 queries
 map.forEach((key, value) -> {
     Entity e = repository.findById(id);
 });
 
-// ✅ Efficient – single query
+//  Efficient – single query
 List<Long> ids = new ArrayList<>(map.keySet());
 List<Entity> entities = repository.findAllById(ids);
 ```
@@ -364,7 +364,7 @@ private List<RelatedEntity> relatedEntities;
 
 ---
 
-## 📊 Exception Flow Diagram
+##  Exception Flow Diagram
 
 ```
 [Quartz Scheduler Thread]
@@ -394,7 +394,7 @@ private List<RelatedEntity> relatedEntities;
 
 ---
 
-## 🎯 Investigation Checklist
+##  Investigation Checklist
 
 - [ ] Identify which entity is loaded in `ServiceAbstract.findEntityById()`  
 - [ ] Count `@OneToMany` / `@ManyToMany` relationships  
@@ -406,7 +406,7 @@ private List<RelatedEntity> relatedEntities;
 
 ---
 
-## 📚 Key Concepts Recap
+##  Key Concepts Recap
 
 | Concept | Description |
 |---------|-------------|
@@ -425,7 +425,7 @@ private List<RelatedEntity> relatedEntities;
 
 ---
 
-## 🔗 Technology Stack Observed
+##  Technology Stack Observed
 
 - **Framework:** Spring (AOP, Transactions, Data JPA)  
 - **ORM:** Hibernate  
@@ -440,7 +440,7 @@ private List<RelatedEntity> relatedEntities;
 
 ---
 
-## 💡 Final Observations
+##  Final Observations
 
 This failure showcases a classic combination of **poor entity design** with **unbounded eager fetching**. PostgreSQL’s 1664-column limit is rarely hit in well-structured systems.
 

@@ -1,10 +1,10 @@
-# 🔧 Detailed Guide: How to Instrument Applications
+#  Detailed Guide: How to Instrument Applications
 
 This guide explains, **step by step**, how to instrument your applications so they can send telemetry to SigNoz.
 
 ---
 
-## 📋 Table of Contents
+##  Table of Contents
 
 1. [What Is Instrumentation?](#what-is-instrumentation)
 2. [Observability Architecture](#observability-architecture)
@@ -20,26 +20,26 @@ This guide explains, **step by step**, how to instrument your applications so th
 
 **Instrumentation** is the process of adding code to your application so that it can collect telemetry data (traces, metrics, and logs).
 
-### 🎯 Simple Analogy
+###  Simple Analogy
 
 Picture your application as a car:
 
 - **Without instrumentation**: A car without a dashboard. You drive, but you have no idea about speed, temperature, or fuel.
 - **With instrumentation**: A car with a complete dashboard. You see everything happening in real time.
 
-### 📊 Types of Data Collected
+###  Types of Data Collected
 
-1. **TRACES** 🔍  
+1. **TRACES**   
    - What: The journey of a request from start to finish  
    - When to use: “Why is this request slow?”  
    - Example: HTTP request → DB query → External API call → Response
 
-2. **METRICS** 📈  
+2. **METRICS**   
    - What: Numeric values over time  
    - When to use: “How many requests per second?”  
    - Example: Average latency, error rate, memory usage
 
-3. **LOGS** 📝  
+3. **LOGS**   
    - What: Events that happen inside your app  
    - When to use: “What happened right before the error?”  
    - Example: “User created”, “Failed to connect to DB”
@@ -91,7 +91,7 @@ Picture your application as a car:
 
 ## Step by Step: Node.js
 
-### 🗂️ Project Structure
+###  Project Structure
 
 ```
 your-project/
@@ -101,7 +101,7 @@ your-project/
 └── node_modules/         ← 4. Created by npm install
 ```
 
-### 📍 STEP 1: Add Dependencies
+###  STEP 1: Add Dependencies
 
 **WHERE:** `package.json`
 
@@ -132,14 +132,14 @@ npm install
 |---------|---------|
 | `@opentelemetry/api` | Core OpenTelemetry API |
 | `@opentelemetry/sdk-node` | Node.js SDK (main engine) |
-| `@opentelemetry/auto-instrumentations-node` | 🔥 Auto instruments Express, HTTP, etc. |
+| `@opentelemetry/auto-instrumentations-node` |  Auto instruments Express, HTTP, etc. |
 | `@opentelemetry/exporter-trace-otlp-grpc` | Sends traces to SigNoz |
 | `@opentelemetry/resources` | Sets application metadata |
 | `@opentelemetry/semantic-conventions` | Naming standards |
 
 ---
 
-### 📍 STEP 2: Create the Instrumentation File
+###  STEP 2: Create the Instrumentation File
 
 **WHERE:** Create `instrumentation.js` **at the project root**
 
@@ -178,7 +178,7 @@ const sdk = new NodeSDK({
   resource,
   traceExporter,
 
-  // 🔥 MAGIC HAPPENS HERE: Auto instrumentation
+  //  MAGIC HAPPENS HERE: Auto instrumentation
   instrumentations: [
     getNodeAutoInstrumentations({
       // Disable instrumentations you don't need
@@ -193,14 +193,14 @@ const sdk = new NodeSDK({
 // STEP 2.4: Start the SDK
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 sdk.start();
-console.log('⚡ OpenTelemetry initialized');
+console.log(' OpenTelemetry initialized');
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // STEP 2.5: Graceful shutdown
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 process.on('SIGTERM', () => {
   sdk.shutdown()
-    .then(() => console.log('🔌 Telemetry stopped'))
+    .then(() => console.log(' Telemetry stopped'))
     .finally(() => process.exit(0));
 });
 ```
@@ -236,7 +236,7 @@ sdk.start();
 
 ---
 
-### 📍 STEP 3: Load Instrumentation BEFORE Your App
+###  STEP 3: Load Instrumentation BEFORE Your App
 
 **WHERE:** `package.json` → scripts
 
@@ -261,19 +261,19 @@ node -r ./instrumentation.js server.js
 
 **CRITICAL ORDER:**
 
-1. ✅ `instrumentation.js` is loaded FIRST  
-2. ✅ OpenTelemetry configures itself  
-3. ✅ Auto instrumentation turns on  
-4. ✅ `server.js` loads (already instrumented!)
+1.  `instrumentation.js` is loaded FIRST  
+2.  OpenTelemetry configures itself  
+3.  Auto instrumentation turns on  
+4.  `server.js` loads (already instrumented!)
 
-**❌ IF YOU LOAD IN THE WRONG ORDER:**
+** IF YOU LOAD IN THE WRONG ORDER:**
 ```javascript
-// ❌ WRONG – Won’t work!
+//  WRONG – Won’t work!
 const express = require('express');  // Express loaded first
 require('./instrumentation');        // Too late!
 ```
 
-**✅ CORRECT ORDER:**
+** CORRECT ORDER:**
 ```bash
 node -r ./instrumentation.js server.js
 # Instrumentation loads BEFORE Express!
@@ -281,7 +281,7 @@ node -r ./instrumentation.js server.js
 
 ---
 
-### 📍 STEP 4: Your Code DOES NOT Change!
+###  STEP 4: Your Code DOES NOT Change!
 
 **WHERE:** `server.js` (your application)
 
@@ -300,15 +300,15 @@ app.get('/users', (req, res) => {
 app.listen(3000);
 ```
 
-**🎉 MAGIC:** Without touching your code, OpenTelemetry is already:
-- ✅ Tracking every HTTP request
-- ✅ Measuring latency
-- ✅ Capturing errors
-- ✅ Sending data to SigNoz
+** MAGIC:** Without touching your code, OpenTelemetry is already:
+-  Tracking every HTTP request
+-  Measuring latency
+-  Capturing errors
+-  Sending data to SigNoz
 
 ---
 
-### 📍 STEP 5: Run and Validate
+###  STEP 5: Run and Validate
 
 **RUN:**
 ```bash
@@ -317,7 +317,7 @@ npm start
 
 **YOU’LL SEE:**
 ```
-⚡ OpenTelemetry initialized
+ OpenTelemetry initialized
 Server running on port 3000
 ```
 
@@ -335,7 +335,7 @@ curl http://localhost:3000/users
 
 ## Step by Step: Python
 
-### 🗂️ Project Structure
+###  Project Structure
 
 ```
 your-project/
@@ -345,7 +345,7 @@ your-project/
 └── venv/                 ← 4. Created by pip install
 ```
 
-### 📍 STEP 1: Add Dependencies
+###  STEP 1: Add Dependencies
 
 **WHERE:** `requirements.txt`
 
@@ -368,7 +368,7 @@ pip install -r requirements.txt
 
 ---
 
-### 📍 STEP 2: Create the Instrumentation File
+###  STEP 2: Create the Instrumentation File
 
 **WHERE:** Create `instrumentation.py` **at the project root**
 
@@ -419,15 +419,15 @@ trace.set_tracer_provider(tracer_provider)
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # STEP 2.6: Auto instrument Flask and Requests
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-FlaskInstrumentor().instrument()     # 🔥 Instruments Flask
-RequestsInstrumentor().instrument()  # 🔥 Instruments HTTP requests
+FlaskInstrumentor().instrument()     #  Instruments Flask
+RequestsInstrumentor().instrument()  #  Instruments HTTP requests
 
-print("⚡ OpenTelemetry initialized")
+print(" OpenTelemetry initialized")
 ```
 
 ---
 
-### 📍 STEP 3: Import BEFORE Flask
+###  STEP 3: Import BEFORE Flask
 
 **WHERE:** `app.py` (first line!)
 
@@ -452,18 +452,18 @@ if __name__ == '__main__':
 **CRITICAL ORDER:**
 
 ```python
-# ✅ CORRECT
+#  CORRECT
 import instrumentation  # 1. Instrumentation FIRST
 from flask import Flask # 2. Flask AFTER
 
-# ❌ WRONG
+#  WRONG
 from flask import Flask  # Flask first
 import instrumentation   # Too late!
 ```
 
 ---
 
-### 📍 STEP 4: Run and Validate
+###  STEP 4: Run and Validate
 
 **RUN:**
 ```bash
@@ -483,7 +483,7 @@ curl http://localhost:5000/users
 
 ## How It Works in Practice
 
-### 🔄 Full Request Flow
+###  Full Request Flow
 
 ```
 1. Request arrives
@@ -517,7 +517,7 @@ curl http://localhost:5000/users
    └─→ You inspect it on the dashboard!
 ```
 
-### 📊 What You See in SigNoz
+###  What You See in SigNoz
 
 **Full trace:**
 ```
@@ -533,14 +533,14 @@ GET /users                     [200] 45 ms
 
 ## Manual vs Automatic Instrumentation
 
-### 🤖 Automatic Instrumentation (Recommended)
+###  Automatic Instrumentation (Recommended)
 
 **What:** OpenTelemetry instruments libraries automatically
 
 **Benefits:**
-- ✅ No code changes required
-- ✅ Covers common cases (HTTP, DB, cache)
-- ✅ Fast to implement
+-  No code changes required
+-  Covers common cases (HTTP, DB, cache)
+-  Fast to implement
 
 **Supported libraries include:**
 - HTTP/HTTPS
@@ -551,7 +551,7 @@ GET /users                     [200] 45 ms
 - GraphQL
 - gRPC
 
-### ✋ Manual Instrumentation
+###  Manual Instrumentation
 
 **When:** For business-specific operations
 
@@ -613,7 +613,7 @@ def process_payment():
 
 ## Adapting It to Your App
 
-### ✅ Instrumentation Checklist
+###  Instrumentation Checklist
 
 1. **Identify your stack**
    - [ ] Language: Node.js, Python, Go, Java?
@@ -640,27 +640,27 @@ def process_payment():
    - [ ] Send requests
    - [ ] Inspect traces in SigNoz
 
-### 🎯 Where Should You Instrument?
+###  Where Should You Instrument?
 
 **Priorities:**
 
 1. **High priority (always instrument):**
-   - ✅ HTTP/API requests
-   - ✅ Database calls
-   - ✅ Cache operations
-   - ✅ External API calls
+   -  HTTP/API requests
+   -  Database calls
+   -  Cache operations
+   -  External API calls
 
 2. **Medium priority:**
-   - ⚡ Queue processing (RabbitMQ, Kafka)
-   - ⚡ File uploads/downloads
-   - ⚡ Authentication flows
+   -  Queue processing (RabbitMQ, Kafka)
+   -  File uploads/downloads
+   -  Authentication flows
 
 3. **Low priority (only if needed):**
-   - 📝 File system operations
-   - 📝 Internal calculations
-   - 📝 String manipulation
+   -  File system operations
+   -  Internal calculations
+   -  String manipulation
 
-### 📝 Real-Life Reusable Example
+###  Real-Life Reusable Example
 
 ```javascript
 // instrumentation.js (works for any Node.js app)
@@ -686,11 +686,11 @@ sdk.start();
 process.on('SIGTERM', () => sdk.shutdown());
 ```
 
-You can reuse this in ANY Node.js application! 🚀
+You can reuse this in ANY Node.js application! 
 
 ---
 
-## 📚 Summary
+##  Summary
 
 1. **Install** OpenTelemetry dependencies  
 2. **Create** `instrumentation.js/py`  
@@ -698,5 +698,5 @@ You can reuse this in ANY Node.js application! 🚀
 4. **Load it BEFORE** your application  
 5. **Done!** Your app is instrumented automatically
 
-**The magic is:** You don’t need to modify your application code! 🎉
+**The magic is:** You don’t need to modify your application code! 
 

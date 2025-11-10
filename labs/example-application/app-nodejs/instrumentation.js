@@ -1,5 +1,5 @@
 /**
- * ⚡ OPENTELEMETRY INSTRUMENTATION FOR SIGNOZ
+ *  OPENTELEMETRY INSTRUMENTATION FOR SIGNOZ
  *
  * This file automatically configures collection of:
  * - Traces (request lifecycles)
@@ -19,11 +19,11 @@ const { Resource } = require('@opentelemetry/resources');
 const { SemanticResourceAttributes } = require('@opentelemetry/semantic-conventions');
 
 /**
- * 🔧 OPEN TELEMETRY SDK CONFIGURATION
+ *  OPEN TELEMETRY SDK CONFIGURATION
  */
 const sdk = new NodeSDK({
   /**
-   * 📦 RESOURCE METADATA – identifies this service
+   *  RESOURCE METADATA – identifies this service
    *
    * Semantic attributes help SigNoz:
    * - Group telemetry by service
@@ -37,7 +37,7 @@ const sdk = new NodeSDK({
   }),
 
   /**
-   * 🔄 TRACE EXPORTER
+   *  TRACE EXPORTER
    *
    * Sends traces to the OTel Collector.
    * - Protocol: OTLP over gRPC
@@ -50,22 +50,22 @@ const sdk = new NodeSDK({
   }),
 
   /**
-   * 📊 METRIC EXPORTER
+   *  METRIC EXPORTER
    *
    * Metrics are handled automatically by the SDK for this sample,
    * so no dedicated exporter is required here.
    */
 
   /**
-   * ⚡ AUTO INSTRUMENTATION
+   *  AUTO INSTRUMENTATION
    *
    * This enables instrumentation for:
-   * ✅ HTTP/HTTPS clients and servers
-   * ✅ Express
-   * ✅ PostgreSQL, MySQL, MongoDB
-   * ✅ Redis
-   * ✅ GraphQL
-   * ✅ …and many more integrations!
+   *  HTTP/HTTPS clients and servers
+   *  Express
+   *  PostgreSQL, MySQL, MongoDB
+   *  Redis
+   *  GraphQL
+   *  …and many more integrations!
    *
    * No manual instrumentation required for common libraries.
    */
@@ -79,7 +79,7 @@ const sdk = new NodeSDK({
   ],
 
   /**
-   * 📝 LOGGER
+   *  LOGGER
    *
    * Configure OpenTelemetry logging (debug, info, warn, error).
    * The resource already sets the service name, so no need to override it here.
@@ -87,31 +87,31 @@ const sdk = new NodeSDK({
 });
 
 /**
- * ▶️ START THE SDK
+ * ▶ START THE SDK
  *
  * From this point forward, everything is traced automatically.
  */
 sdk.start();
-console.log('⚡ OpenTelemetry SDK initialized');
-console.log('📊 Sending traces to: http://localhost:4317');
-console.log('🔍 View telemetry at: http://localhost:8080\n');
+console.log(' OpenTelemetry SDK initialized');
+console.log(' Sending traces to: http://localhost:4317');
+console.log(' View telemetry at: http://localhost:8080\n');
 
 /**
- * 🛑 GRACEFUL SHUTDOWN
+ *  GRACEFUL SHUTDOWN
  *
  * Ensure telemetry is flushed when the app stops.
  */
 process.on('SIGTERM', () => {
   sdk.shutdown()
-    .then(() => console.log('\n🔌 Telemetry shut down'))
-    .catch((error) => console.log('\n❌ Error during telemetry shutdown:', error))
+    .then(() => console.log('\n Telemetry shut down'))
+    .catch((error) => console.log('\n Error during telemetry shutdown:', error))
     .finally(() => process.exit(0));
 });
 
 module.exports = sdk;
 
 /**
- * 📚 KEY CONCEPTS
+ *  KEY CONCEPTS
  *
  * 1. TRACE: Follows a single request as it flows through the system
  * 2. SPAN: A timed unit of work within a trace (DB query, external API call)
@@ -119,14 +119,14 @@ module.exports = sdk;
  * 4. ATTRIBUTE: Metadata attached to spans/traces
  * 5. CONTEXT: Correlates telemetry across services
  *
- * 🎯 WHAT YOU GET
+ *  WHAT YOU GET
  *
- * - 🔍 Traces: Understand each request’s journey
- * - 📊 Metrics: Monitor performance, errors, throughput
- * - 🐛 Debugging: Spot bottlenecks and failures quickly
- * - 📈 Alerting: Configure automated alerts in SigNoz
+ * -  Traces: Understand each request’s journey
+ * -  Metrics: Monitor performance, errors, throughput
+ * -  Debugging: Spot bottlenecks and failures quickly
+ * -  Alerting: Configure automated alerts in SigNoz
  *
- * 🚀 QUICK START
+ *  QUICK START
  *
  * 1. Run: npm install
  * 2. Run: npm start

@@ -1,10 +1,10 @@
-# 📦 Dependency Installation
+#  Dependency Installation
 
 This guide walks you through installing every dependency required to run the sample applications.
 
 ---
 
-## 🟢 Node.js – Full Setup
+##  Node.js – Full Setup
 
 ### 1. Install Node.js (if you don’t have it)
 
@@ -63,12 +63,12 @@ npm install
 npm list --depth=0
 
 # Make sure OpenTelemetry is available
-node -e "require('@opentelemetry/sdk-node'); console.log('✅ OpenTelemetry OK')"
+node -e "require('@opentelemetry/sdk-node'); console.log(' OpenTelemetry OK')"
 ```
 
 ---
 
-## 🐍 Python – Full Setup
+##  Python – Full Setup
 
 ### 1. Install Python 3.8+ (if you don’t have it)
 
@@ -168,12 +168,12 @@ pip install -r requirements.txt
 pip list
 
 # Make sure OpenTelemetry is available
-python -c "import opentelemetry; print('✅ OpenTelemetry OK')"
+python -c "import opentelemetry; print(' OpenTelemetry OK')"
 ```
 
 ---
 
-## 🐳 Docker – Verification
+##  Docker – Verification
 
 ### 1. Check Docker
 
@@ -217,7 +217,7 @@ lsof -i -P | grep LISTEN
 
 ---
 
-## 🧪 Validate the Full Setup
+##  Validate the Full Setup
 
 ### Node.js Test
 
@@ -263,7 +263,7 @@ curl -I http://localhost:8080
 
 ---
 
-## 🐛 Troubleshooting
+##  Troubleshooting
 
 ### Node.js
 
@@ -365,7 +365,7 @@ docker system prune -a
 
 ---
 
-## ✅ Final Checklist
+##  Final Checklist
 
 Before moving on, confirm that:
 
@@ -384,20 +384,20 @@ Before moving on, confirm that:
 
 ---
 
-## 📚 Next Steps
+##  Next Steps
 
 With every dependency ready:
 
-1. ✅ Read `COMO_USAR.md` (How to Use)  
-2. ✅ Follow the `README.md` for your chosen application  
-3. ✅ Explore the SigNoz UI at http://localhost:8080  
-4. ✅ Have fun instrumenting your own services!
+1.  Read `COMO_USAR.md` (How to Use)  
+2.  Follow the `README.md` for your chosen application  
+3.  Explore the SigNoz UI at http://localhost:8080  
+4.  Have fun instrumenting your own services!
 
 ---
 
 ## 🆘 Need Help?
 
-- 📖 Documentation: [signoz.io/docs](https://signoz.io/docs/)
-- 💬 Discord: [Signoz Discord](https://discord.com/invite/signoz)
-- 🐛 GitHub Issues: [github.com/SigNoz/signoz](https://github.com/SigNoz/signoz)
+-  Documentation: [signoz.io/docs](https://signoz.io/docs/)
+-  Discord: [Signoz Discord](https://discord.com/invite/signoz)
+-  GitHub Issues: [github.com/SigNoz/signoz](https://github.com/SigNoz/signoz)
 

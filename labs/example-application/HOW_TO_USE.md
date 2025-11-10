@@ -1,16 +1,16 @@
-# 🚀 How to Use the Sample Applications
+#  How to Use the Sample Applications
 
 This hands-on guide walks you step-by-step through running and testing the sample applications.
 
-## 📋 Prerequisites
+##  Prerequisites
 
-✅ SigNoz running via Docker:
+ SigNoz running via Docker:
 ```bash
 cd /home/cleverson/Documents/signoz-lab/signoz/deploy/docker
 docker-compose up -d
 ```
 
-✅ Confirm everything is up:
+ Confirm everything is up:
 ```bash
 docker ps
 ```
@@ -23,7 +23,7 @@ You should see:
 
 ---
 
-## 🟢 Option 1: Node.js Application
+##  Option 1: Node.js Application
 
 ### Step 1: Navigate to the App
 
@@ -52,12 +52,12 @@ npm start
 You should see:
 
 ```
-⚡ OpenTelemetry SDK initialized
-📊 Sending traces and metrics to: http://localhost:4317
-🔍 Data will appear in SigNoz at: http://localhost:8080
+ OpenTelemetry SDK initialized
+ Sending traces and metrics to: http://localhost:4317
+ Data will appear in SigNoz at: http://localhost:8080
 
-🚀 Server started!
-📡 Server running at: http://localhost:3000
+ Server started!
+ Server running at: http://localhost:3000
 ```
 
 ### Step 4: Generate Traffic
@@ -91,7 +91,7 @@ curl http://localhost:3000/api/slow
 
 ---
 
-## 🐍 Option 2: Python Application
+##  Option 2: Python Application
 
 ### Step 1: Navigate to the App
 
@@ -127,12 +127,12 @@ python app.py
 You should see:
 
 ```
-⚡ OpenTelemetry SDK initialized
-📊 Sending traces and metrics to: http://localhost:4317
-🔍 Data will appear in SigNoz at: http://localhost:8080
+ OpenTelemetry SDK initialized
+ Sending traces and metrics to: http://localhost:4317
+ Data will appear in SigNoz at: http://localhost:8080
 
-🚀 Server started!
-📡 Server running at: http://localhost:5000
+ Server started!
+ Server running at: http://localhost:5000
 ```
 
 ### Step 5: Generate Traffic
@@ -162,7 +162,7 @@ curl http://localhost:5000/api/random-error
 
 ---
 
-## 🎯 Recommended Activities
+##  Recommended Activities
 
 ### 1. Explore Traces
 
@@ -223,7 +223,7 @@ curl http://localhost:3000/api/products  # May produce an error
 
 ---
 
-## 🔍 What to Look For in SigNoz
+##  What to Look For in SigNoz
 
 ### Successful Traces
 
@@ -253,27 +253,27 @@ curl http://localhost:3000/api/products  # May produce an error
 
 ---
 
-## 🐛 Troubleshooting
+##  Troubleshooting
 
 ### “I can’t see data in SigNoz”
 
 **Check:**
 
-1. ✅ SigNoz is running:
+1.  SigNoz is running:
    ```bash
    docker ps | grep signoz
    ```
 
-2. ✅ OTel Collector is running:
+2.  OTel Collector is running:
    ```bash
    docker ps | grep otel-collector
    ```
 
-3. ✅ The app is sending data:
+3.  The app is sending data:
    - Console shows no errors?
    - Logs mention “OpenTelemetry SDK initialized”?
 
-4. ✅ Ports are correct:
+4.  Ports are correct:
    - Node.js: 3000
    - Python: 5000
    - OTel Collector: 4317
@@ -333,31 +333,31 @@ app.run(host='0.0.0.0', port=5001, debug=True)  # Changed from 5000 to 5001
 
 ---
 
-## 🎓 Next Steps
+##  Next Steps
 
 Now that you can instrument applications, try:
 
-1. ✅ **Instrumenting your own service**
+1.  **Instrumenting your own service**
    - Copy `instrumentation.js` or `instrumentation.py`
    - Adapt it to your stack
    - Deploy and monitor!
 
-2. ✅ **Setting up alerts**
+2.  **Setting up alerts**
    - In SigNoz: Settings → Alerts
    - Configure notifications for errors
 
-3. ✅ **Integrating with CI/CD**
+3.  **Integrating with CI/CD**
    - Add observability checks to pipelines
    - Automate deploys with monitoring
 
-4. ✅ **Adding custom instrumentation**
+4.  **Adding custom instrumentation**
    - Spans for critical operations
    - Custom metrics
    - Business attributes
 
 ---
 
-## 📚 Resources
+##  Resources
 
 - [SigNoz Documentation](https://signoz.io/docs/)
 - [OpenTelemetry](https://opentelemetry.io/)
@@ -366,11 +366,11 @@ Now that you can instrument applications, try:
 
 ---
 
-## ✨ Tips
+##  Tips
 
-💡 **Tip 1:** Run both Node.js and Python apps simultaneously and compare!  
+ **Tip 1:** Run both Node.js and Python apps simultaneously and compare!  
 
-💡 **Tip 2:** Use load testing to generate more data:
+ **Tip 2:** Use load testing to generate more data:
 ```bash
 # Install Apache Bench
 sudo apt-get install apache2-utils  # Linux
@@ -380,11 +380,11 @@ brew install httpd                   # Mac
 ab -n 1000 -c 10 http://localhost:3000/api/health
 ```
 
-💡 **Tip 3:** Try different scenarios:
+ **Tip 3:** Try different scenarios:
 - Normal requests
 - Slow requests
 - Error scenarios
 - High RPS bursts
 
-Enjoy exploring observability! 🚀
+Enjoy exploring observability! 
 

@@ -1,15 +1,15 @@
-# 🟢 Node.js Sample Application - SigNoz
+#  Node.js Sample Application - SigNoz
 
 Node.js + Express application fully instrumented with OpenTelemetry to demonstrate observability with SigNoz.
 
-## 📋 Prerequisites
+##  Prerequisites
 
 - Node.js 14+
 - npm or yarn
 - SigNoz running (see `/signoz/deploy/docker`)
 - OpenTelemetry Collector running
 
-## 🚀 Installation and Execution
+##  Installation and Execution
 
 ### 1. Install Dependencies
 
@@ -68,17 +68,17 @@ Explore:
 - **Service Map**: Visualize dependencies
 - **Metrics**: Performance, latency, errors
 
-## 📁 File Structure
+##  File Structure
 
 ```
 app-nodejs/
 ├── package.json          # Dependencies and scripts
-├── instrumentation.js    # ⚡ OpenTelemetry configuration
+├── instrumentation.js    #  OpenTelemetry configuration
 ├── server.js             # Express application
 └── README.md             # This file
 ```
 
-## 🔍 How the Instrumentation Works
+##  How the Instrumentation Works
 
 ### Auto-Instrumentation
 
@@ -89,10 +89,10 @@ When you run `npm start`, the script uses:
 
 The `-r` flag loads `instrumentation.js` **before** the application starts. This ensures:
 
-✅ **All HTTP requests** are automatically traced  
-✅ **Database calls** are instrumented (when configured)  
-✅ **Performance metrics** are collected  
-✅ **Context propagation** across operations  
+ **All HTTP requests** are automatically traced  
+ **Database calls** are instrumented (when configured)  
+ **Performance metrics** are collected  
+ **Context propagation** across operations  
 
 ### Configuration in instrumentation.js
 
@@ -111,7 +111,7 @@ const sdk = new NodeSDK({
 });
 ```
 
-## 🎯 Available Endpoints
+##  Available Endpoints
 
 | Method | Endpoint | Description | Observability Notes |
 |--------|----------|-------------|---------------------|
@@ -123,7 +123,7 @@ const sdk = new NodeSDK({
 | GET | `/api/slow` | Slow operation | Latency metrics |
 | GET | `/api/redirect-demo` | Redirect | Multiple spans |
 
-## 📊 Telemetry Types Generated
+##  Telemetry Types Generated
 
 ### 1. Traces
 
@@ -152,7 +152,7 @@ Each span includes:
 - `service.name`: signoz-example-nodejs
 - `service.version`: 1.0.0
 
-## 🔧 Advanced Configuration
+##  Advanced Configuration
 
 ### Change Collector Endpoint
 
@@ -188,7 +188,7 @@ instrumentations: [
 ],
 ```
 
-## 🐛 Troubleshooting
+##  Troubleshooting
 
 ### Not seeing data in SigNoz
 
@@ -215,15 +215,15 @@ rm -rf node_modules package-lock.json
 npm install
 ```
 
-## 📚 Next Steps
+##  Next Steps
 
-1. ✅ Run the application and confirm data in SigNoz  
-2. 🔍 Exercise different endpoints to generate varied traces  
-3. 📊 Build dashboards in SigNoz  
-4. 🔔 Configure alerts for errors and latency  
-5. 🔧 Adapt the instrumentation to your own services  
+1.  Run the application and confirm data in SigNoz  
+2.  Exercise different endpoints to generate varied traces  
+3.  Build dashboards in SigNoz  
+4.  Configure alerts for errors and latency  
+5.  Adapt the instrumentation to your own services  
 
-## 🔗 Helpful Links
+##  Helpful Links
 
 - [OpenTelemetry Node.js](https://opentelemetry.io/docs/instrumentation/js/getting-started/nodejs/)
 - [SigNoz Documentation](https://signoz.io/docs/)

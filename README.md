@@ -1,11 +1,11 @@
-# 📘 SRE Study Guide: Understanding Requests & Observability
+#  SRE Study Guide: Understanding Requests & Observability
 
 Welcome to the **SRE Study Guide**!  
 This repository is designed to help you progressively learn about HTTP requests, APIs, load balancing, observability, and SRE best practices.  
 By the end of this guide, you will be able to monitor requests with **SigNoz** and apply this knowledge in your career as an SRE.
 
 
-## 📂 Repository Structure
+##  Repository Structure
 
 ```bash
 sre-study-guide/
@@ -28,7 +28,7 @@ sre-study-guide/
 ```
 ---
 
-## 📖 Table of Contents
+##  Table of Contents
 
 1. [HTTP Requests & Responses Fundamentals](chapters/01_http_requests.md)  
 2. [REST vs gRPC vs GraphQL](chapters/02_rest_vs_grpc_vs_graphql.md)  
@@ -39,7 +39,7 @@ sre-study-guide/
 
 ---
 
-## 🎯 Learning Outcomes
+##  Learning Outcomes
 After completing this study guide, you will be able to:
 - Understand how HTTP requests and responses work.  
 - Compare REST, gRPC, and GraphQL.  
@@ -50,18 +50,18 @@ After completing this study guide, you will be able to:
 
 ---
 
-## 🧪 Labs
+##  Labs
 
 ### Lab 1: Node.js Application with OpenTelemetry & SigNoz
 
 **Get hands-on experience with a complete Node.js application!**
 
 The lab includes:
-- ✅ Complete e-commerce API with user registrations, orders, and payments
-- ✅ OpenTelemetry instrumentation for traces and custom metrics
-- ✅ Docker Compose setup for easy deployment
-- ✅ SigNoz integration for visualization
-- ✅ Ready-to-run code with no complex setup
+-  Complete e-commerce API with user registrations, orders, and payments
+-  OpenTelemetry instrumentation for traces and custom metrics
+-  Docker Compose setup for easy deployment
+-  SigNoz integration for visualization
+-  Ready-to-run code with no complex setup
 
 **Quick Start:**
 1. Follow the instructions in [labs/01.md](labs/01.md)
@@ -77,17 +77,17 @@ The lab includes:
 
 ---
 
-## 📝 Exercises
+##  Exercises
 Each chapter includes exercises to reinforce learning.  
 For deeper practice, check the [exercises/](exercises) folder.  
 
 ---
 
-## 🤝 Contributions
+##  Contributions
 This guide is intended as a living document. Feel free to open issues or submit pull requests if you'd like to improve or expand the content.  
 
 ---
 
-## 📌 Author
+##  Author
 Created by **Cleverson Rodrigues** — SRE professional passionate about reliability, observability, and teaching.  
 
