@@ -1,111 +1,111 @@
-# 🔧 Guia Detalhado: Como Instrumentar Aplicações
+# 🔧 Detailed Guide: How to Instrument Applications
 
-Este guia explica **passo a passo** como instrumentar suas aplicações para enviar dados ao SigNoz.
-
----
-
-## 📋 Índice
-
-1. [O Que é Instrumentação?](#o-que-é-instrumentação)
-2. [Arquitetura de Observabilidade](#arquitetura-de-observabilidade)
-3. [Passo a Passo: Node.js](#passo-a-passo-nodejs)
-4. [Passo a Passo: Python](#passo-a-passo-python)
-5. [Como Funciona na Prática](#como-funciona-na-prática)
-6. [Instrumentação Manual vs Automática](#instrumentação-manual-vs-automática)
-7. [Adaptando para Sua Aplicação](#adaptando-para-sua-aplicação)
+This guide explains, **step by step**, how to instrument your applications so they can send telemetry to SigNoz.
 
 ---
 
-## O Que é Instrumentação?
+## 📋 Table of Contents
 
-**Instrumentação** é o processo de adicionar código à sua aplicação para coletar dados de telemetria (traces, métricas e logs).
-
-### 🎯 Analogia Simples
-
-Imagine sua aplicação como um carro:
-
-- **Sem instrumentação**: Carro sem painel. Você dirige, mas não sabe velocidade, temperatura, combustível.
-- **Com instrumentação**: Carro com painel completo. Você vê tudo que está acontecendo em tempo real.
-
-### 📊 Tipos de Dados Coletados
-
-1. **TRACES** 🔍
-   - O que é: Rastreamento de uma requisição do início ao fim
-   - Quando usar: "Por que essa requisição está lenta?"
-   - Exemplo: Request HTTP → Consulta DB → Chamada API externa → Response
-
-2. **MÉTRICAS** 📈
-   - O que é: Valores numéricos ao longo do tempo
-   - Quando usar: "Quantas requisições por segundo?"
-   - Exemplo: Latência média, taxa de erro, uso de memória
-
-3. **LOGS** 📝
-   - O que é: Eventos que acontecem na aplicação
-   - Quando usar: "O que aconteceu antes do erro?"
-   - Exemplo: "Usuário criado", "Erro ao conectar no DB"
+1. [What Is Instrumentation?](#what-is-instrumentation)
+2. [Observability Architecture](#observability-architecture)
+3. [Step by Step: Node.js](#step-by-step-nodejs)
+4. [Step by Step: Python](#step-by-step-python)
+5. [How It Works in Practice](#how-it-works-in-practice)
+6. [Manual vs Automatic Instrumentation](#manual-vs-automatic-instrumentation)
+7. [Adapting It to Your App](#adapting-it-to-your-app)
 
 ---
 
-## Arquitetura de Observabilidade
+## What Is Instrumentation?
+
+**Instrumentation** is the process of adding code to your application so that it can collect telemetry data (traces, metrics, and logs).
+
+### 🎯 Simple Analogy
+
+Picture your application as a car:
+
+- **Without instrumentation**: A car without a dashboard. You drive, but you have no idea about speed, temperature, or fuel.
+- **With instrumentation**: A car with a complete dashboard. You see everything happening in real time.
+
+### 📊 Types of Data Collected
+
+1. **TRACES** 🔍  
+   - What: The journey of a request from start to finish  
+   - When to use: “Why is this request slow?”  
+   - Example: HTTP request → DB query → External API call → Response
+
+2. **METRICS** 📈  
+   - What: Numeric values over time  
+   - When to use: “How many requests per second?”  
+   - Example: Average latency, error rate, memory usage
+
+3. **LOGS** 📝  
+   - What: Events that happen inside your app  
+   - When to use: “What happened right before the error?”  
+   - Example: “User created”, “Failed to connect to DB”
+
+---
+
+## Observability Architecture
 
 ```
 ┌──────────────────────────────────────────────────────────────────┐
-│ SUA APLICAÇÃO                                                    │
+│ YOUR APPLICATION                                                 │
 │                                                                  │
 │  ┌────────────────────────────────────────────────────────┐     │
-│  │ 1. Seu Código (Express, Flask, etc)                    │     │
+│  │ 1. Your Code (Express, Flask, etc.)                    │     │
 │  └────────────┬───────────────────────────────────────────┘     │
 │               │                                                  │
 │  ┌────────────▼───────────────────────────────────────────┐     │
 │  │ 2. OpenTelemetry SDK                                   │     │
-│  │    - Auto-instrumenta bibliotecas (HTTP, DB, etc)      │     │
-│  │    - Coleta traces, métricas, logs                     │     │
-│  │    - Adiciona contexto (IDs, atributos)                │     │
+│  │    - Auto instruments libraries (HTTP, DB, etc.)       │     │
+│  │    - Collects traces, metrics, logs                    │     │
+│  │    - Adds context (IDs, attributes)                    │     │
 │  └────────────┬───────────────────────────────────────────┘     │
 └───────────────┼──────────────────────────────────────────────────┘
                 │
-                │ 3. Envia dados via OTLP (OpenTelemetry Protocol)
+                │ 3. Sends data via OTLP (OpenTelemetry Protocol)
                 ▼
 ┌──────────────────────────────────────────────────────────────────┐
-│ OTEL COLLECTOR (porta 4317)                                      │
-│  - Recebe dados de múltiplas aplicações                          │
-│  - Processa e filtra                                             │
-│  - Envia para backends                                           │
+│ OTEL COLLECTOR (port 4317)                                       │
+│  - Receives data from multiple applications                      │
+│  - Processes and filters                                          │
+│  - Forwards to backends                                           │
 └────────────┬─────────────────────────────────────────────────────┘
              │
              ▼
 ┌──────────────────────────────────────────────────────────────────┐
-│ CLICKHOUSE (Banco de Dados)                                      │
-│  - Armazena traces, métricas, logs                               │
+│ CLICKHOUSE (Database)                                            │
+│  - Stores traces, metrics, logs                                  │
 └────────────┬─────────────────────────────────────────────────────┘
              │
              ▼
 ┌──────────────────────────────────────────────────────────────────┐
-│ SIGNOZ UI (porta 8080)                                           │
-│  - Visualiza dados                                               │
-│  - Dashboards, alertas, análises                                 │
+│ SIGNOZ UI (port 8080)                                            │
+│  - Visualizes telemetry                                          │
+│  - Dashboards, alerts, analytics                                 │
 └──────────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## Passo a Passo: Node.js
+## Step by Step: Node.js
 
-### 🗂️ Estrutura de Arquivos
+### 🗂️ Project Structure
 
 ```
-seu-projeto/
-├── package.json          ← 1. Adicionar dependências aqui
-├── instrumentation.js    ← 2. CRIAR este arquivo (configuração)
-├── server.js             ← 3. Seu código existente
-└── node_modules/         ← 4. npm install cria isto
+your-project/
+├── package.json          ← 1. Add dependencies here
+├── instrumentation.js    ← 2. CREATE this configuration file
+├── server.js             ← 3. Your existing code
+└── node_modules/         ← 4. Created by npm install
 ```
 
-### 📍 PASSO 1: Adicionar Dependências
+### 📍 STEP 1: Add Dependencies
 
-**ONDE:** `package.json`
+**WHERE:** `package.json`
 
-**O QUE FAZER:** Adicionar as bibliotecas OpenTelemetry
+**WHAT:** Add the OpenTelemetry packages
 
 ```json
 {
@@ -121,29 +121,29 @@ seu-projeto/
 }
 ```
 
-**EXECUTAR:**
+**RUN:**
 ```bash
 npm install
 ```
 
-**O QUE CADA BIBLIOTECA FAZ:**
+**WHAT EACH PACKAGE DOES:**
 
-| Biblioteca | Função |
-|-----------|---------|
-| `@opentelemetry/api` | API base do OpenTelemetry |
-| `@opentelemetry/sdk-node` | SDK para Node.js (motor principal) |
-| `@opentelemetry/auto-instrumentations-node` | 🔥 Auto-instrumenta Express, HTTP, etc |
-| `@opentelemetry/exporter-trace-otlp-grpc` | Envia traces para SigNoz |
-| `@opentelemetry/resources` | Define metadados da aplicação |
-| `@opentelemetry/semantic-conventions` | Padrões de nomenclatura |
+| Package | Purpose |
+|---------|---------|
+| `@opentelemetry/api` | Core OpenTelemetry API |
+| `@opentelemetry/sdk-node` | Node.js SDK (main engine) |
+| `@opentelemetry/auto-instrumentations-node` | 🔥 Auto instruments Express, HTTP, etc. |
+| `@opentelemetry/exporter-trace-otlp-grpc` | Sends traces to SigNoz |
+| `@opentelemetry/resources` | Sets application metadata |
+| `@opentelemetry/semantic-conventions` | Naming standards |
 
 ---
 
-### 📍 PASSO 2: Criar Arquivo de Instrumentação
+### 📍 STEP 2: Create the Instrumentation File
 
-**ONDE:** Criar arquivo `instrumentation.js` **na raiz do projeto**
+**WHERE:** Create `instrumentation.js` **at the project root**
 
-**O QUE FAZER:** Configurar o OpenTelemetry SDK
+**WHAT:** Configure the OpenTelemetry SDK
 
 ```javascript
 // instrumentation.js
@@ -154,93 +154,93 @@ const { Resource } = require('@opentelemetry/resources');
 const { SemanticResourceAttributes } = require('@opentelemetry/semantic-conventions');
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// PASSO 2.1: Definir Recurso (identifica sua aplicação)
+// STEP 2.1: Define the Resource (identifies your app)
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 const resource = new Resource({
-  [SemanticResourceAttributes.SERVICE_NAME]: 'minha-aplicacao',  // ← MUDE AQUI
+  [SemanticResourceAttributes.SERVICE_NAME]: 'my-application',  // ← UPDATE THIS
   [SemanticResourceAttributes.SERVICE_VERSION]: '1.0.0',
   [SemanticResourceAttributes.DEPLOYMENT_ENVIRONMENT]: 'production',
 });
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// PASSO 2.2: Configurar Exportador de Traces
+// STEP 2.2: Configure the Trace Exporter
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 const traceExporter = new OTLPTraceExporter({
-  url: 'http://localhost:4317',  // ← Endpoint do Otel Collector
-  // Se o Collector estiver em outro servidor:
-  // url: 'http://SEU_SERVIDOR:4317',
+  url: 'http://localhost:4317',  // ← OTel Collector endpoint
+  // If the collector is remote:
+  // url: 'http://YOUR_SERVER:4317',
 });
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// PASSO 2.3: Configurar SDK
+// STEP 2.3: Configure the SDK
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 const sdk = new NodeSDK({
-  resource: resource,
-  traceExporter: traceExporter,
-  
-  // 🔥 MAGIA ACONTECE AQUI: Auto-instrumentação
+  resource,
+  traceExporter,
+
+  // 🔥 MAGIC HAPPENS HERE: Auto instrumentation
   instrumentations: [
     getNodeAutoInstrumentations({
-      // Desabilitar instrumentações que não precisa
+      // Disable instrumentations you don't need
       '@opentelemetry/instrumentation-fs': {
-        enabled: false,  // Filesystem geralmente não é útil
+        enabled: false,  // File system is rarely useful
       },
     }),
   ],
 });
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// PASSO 2.4: Inicializar SDK
+// STEP 2.4: Start the SDK
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 sdk.start();
-console.log('⚡ OpenTelemetry iniciado');
+console.log('⚡ OpenTelemetry initialized');
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// PASSO 2.5: Shutdown gracioso
+// STEP 2.5: Graceful shutdown
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 process.on('SIGTERM', () => {
   sdk.shutdown()
-    .then(() => console.log('🔌 Telemetria encerrada'))
+    .then(() => console.log('🔌 Telemetry stopped'))
     .finally(() => process.exit(0));
 });
 ```
 
-**EXPLICAÇÃO LINHA POR LINHA:**
+**LINE-BY-LINE EXPLANATION:**
 
 ```javascript
 const resource = new Resource({...});
 ```
-- **O que faz:** Cria metadados sobre sua aplicação
-- **Por que:** SigNoz usa isso para identificar de onde vêm os dados
-- **Mude aqui:** `SERVICE_NAME` para o nome da sua aplicação
+- **What:** Creates metadata about your application  
+- **Why:** SigNoz uses it to identify which service produced the data  
+- **Update:** Set `SERVICE_NAME` to your app name
 
 ```javascript
 const traceExporter = new OTLPTraceExporter({...});
 ```
-- **O que faz:** Define ONDE enviar os traces
-- **Por que:** Conecta sua app ao Otel Collector
-- **Mude aqui:** `url` se o Collector estiver em outro servidor
+- **What:** Defines WHERE traces are sent  
+- **Why:** Connects your app to the OTel Collector  
+- **Update:** Change `url` if the collector is remote
 
 ```javascript
 instrumentations: [getNodeAutoInstrumentations()]
 ```
-- **O que faz:** Ativa instrumentação automática
-- **Por que:** Rastreia HTTP, Express, DB automaticamente SEM modificar seu código
-- **Mude aqui:** Desabilite instrumentações que não usa
+- **What:** Enables automatic instrumentation  
+- **Why:** Tracks HTTP, Express, DB without touching your code  
+- **Update:** Disable libraries you don't use
 
 ```javascript
 sdk.start();
 ```
-- **O que faz:** INICIA a coleta de dados
-- **Por que:** A partir daqui, TUDO é rastreado!
+- **What:** Starts capturing data  
+- **Why:** From this point on, everything is traced!
 
 ---
 
-### 📍 PASSO 3: Carregar Instrumentação ANTES da Aplicação
+### 📍 STEP 3: Load Instrumentation BEFORE Your App
 
-**ONDE:** `package.json` → scripts
+**WHERE:** `package.json` → scripts
 
-**O QUE FAZER:** Usar `-r` (require) para carregar instrumentação primeiro
+**WHAT:** Use `-r` (require) so instrumentation loads first
 
 ```json
 {
@@ -250,106 +250,106 @@ sdk.start();
 }
 ```
 
-**EXPLICAÇÃO:**
+**EXPLANATION:**
 
 ```
 node -r ./instrumentation.js server.js
      ↑                        ↑
      |                        |
-  Carrega ANTES           Sua aplicação
+   Load first             Your app
 ```
 
-**ORDEM IMPORTANTÍSSIMA:**
+**CRITICAL ORDER:**
 
-1. ✅ `instrumentation.js` carrega PRIMEIRO
-2. ✅ OpenTelemetry se configura
-3. ✅ Auto-instrumentação se ativa
-4. ✅ `server.js` carrega (já instrumentado!)
+1. ✅ `instrumentation.js` is loaded FIRST  
+2. ✅ OpenTelemetry configures itself  
+3. ✅ Auto instrumentation turns on  
+4. ✅ `server.js` loads (already instrumented!)
 
-**❌ SE CARREGAR NA ORDEM ERRADA:**
+**❌ IF YOU LOAD IN THE WRONG ORDER:**
 ```javascript
-// ❌ ERRADO - Não funciona!
-const express = require('express');  // Carregou Express primeiro
-require('./instrumentation');        // Tarde demais!
+// ❌ WRONG – Won’t work!
+const express = require('express');  // Express loaded first
+require('./instrumentation');        // Too late!
 ```
 
-**✅ ORDEM CORRETA:**
+**✅ CORRECT ORDER:**
 ```bash
 node -r ./instrumentation.js server.js
-# Instrumentação carrega ANTES do Express!
+# Instrumentation loads BEFORE Express!
 ```
 
 ---
 
-### 📍 PASSO 4: Seu Código NÃO Muda!
+### 📍 STEP 4: Your Code DOES NOT Change!
 
-**ONDE:** `server.js` (sua aplicação)
+**WHERE:** `server.js` (your application)
 
-**O QUE FAZER:** NADA! Continue programando normalmente!
+**WHAT:** NOTHING! Keep coding as usual.
 
 ```javascript
-// server.js - SEM MODIFICAÇÕES!
+// server.js – UNCHANGED!
 const express = require('express');
 const app = express();
 
 app.get('/users', (req, res) => {
-  // Seu código normal
+  // Your normal code
   res.json({ users: [] });
 });
 
 app.listen(3000);
 ```
 
-**🎉 MÁGICA:** Mesmo sem modificar nada, o OpenTelemetry já está:
-- ✅ Rastreando todas as requisições HTTP
-- ✅ Medindo latência
-- ✅ Capturando erros
-- ✅ Enviando dados para SigNoz
+**🎉 MAGIC:** Without touching your code, OpenTelemetry is already:
+- ✅ Tracking every HTTP request
+- ✅ Measuring latency
+- ✅ Capturing errors
+- ✅ Sending data to SigNoz
 
 ---
 
-### 📍 PASSO 5: Executar e Verificar
+### 📍 STEP 5: Run and Validate
 
-**EXECUTAR:**
+**RUN:**
 ```bash
 npm start
 ```
 
-**VOCÊ VERÁ:**
+**YOU’LL SEE:**
 ```
-⚡ OpenTelemetry iniciado
-Servidor rodando na porta 3000
+⚡ OpenTelemetry initialized
+Server running on port 3000
 ```
 
-**TESTAR:**
+**TEST:**
 ```bash
 curl http://localhost:3000/users
 ```
 
-**VERIFICAR NO SIGNOZ:**
-1. Acesse: http://localhost:8080
-2. Vá em "Traces"
-3. Veja o trace da requisição `GET /users`!
+**CHECK IN SIGNOZ:**
+1. Visit http://localhost:8080  
+2. Open “Traces”  
+3. Look for the `GET /users` trace!
 
 ---
 
-## Passo a Passo: Python
+## Step by Step: Python
 
-### 🗂️ Estrutura de Arquivos
+### 🗂️ Project Structure
 
 ```
-seu-projeto/
-├── requirements.txt      ← 1. Adicionar dependências aqui
-├── instrumentation.py    ← 2. CRIAR este arquivo
-├── app.py                ← 3. Seu código existente
-└── venv/                 ← 4. pip install cria isto
+your-project/
+├── requirements.txt      ← 1. Add dependencies here
+├── instrumentation.py    ← 2. CREATE this file
+├── app.py                ← 3. Your existing code
+└── venv/                 ← 4. Created by pip install
 ```
 
-### 📍 PASSO 1: Adicionar Dependências
+### 📍 STEP 1: Add Dependencies
 
-**ONDE:** `requirements.txt`
+**WHERE:** `requirements.txt`
 
-**O QUE FAZER:**
+**WHAT:**
 ```txt
 Flask==3.0.0
 opentelemetry-api==1.21.0
@@ -359,7 +359,7 @@ opentelemetry-instrumentation-flask==0.42b0
 opentelemetry-instrumentation-requests==0.42b0
 ```
 
-**EXECUTAR:**
+**RUN:**
 ```bash
 python3 -m venv venv
 source venv/bin/activate
@@ -368,11 +368,11 @@ pip install -r requirements.txt
 
 ---
 
-### 📍 PASSO 2: Criar Arquivo de Instrumentação
+### 📍 STEP 2: Create the Instrumentation File
 
-**ONDE:** Criar arquivo `instrumentation.py` **na raiz do projeto**
+**WHERE:** Create `instrumentation.py` **at the project root**
 
-**O QUE FAZER:**
+**WHAT:**
 
 ```python
 # instrumentation.py
@@ -385,59 +385,59 @@ from opentelemetry.instrumentation.flask import FlaskInstrumentor
 from opentelemetry.instrumentation.requests import RequestsInstrumentor
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-# PASSO 2.1: Definir Recurso
+# STEP 2.1: Define the Resource
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 resource = Resource.create({
-    SERVICE_NAME: "minha-aplicacao-python",  # ← MUDE AQUI
+    SERVICE_NAME: "my-python-application",  # ← UPDATE THIS
     SERVICE_VERSION: "1.0.0",
 })
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-# PASSO 2.2: Configurar Provider de Traces
+# STEP 2.2: Configure the Tracer Provider
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 tracer_provider = TracerProvider(resource=resource)
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-# PASSO 2.3: Configurar Exportador
+# STEP 2.3: Configure the Exporter
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 otlp_exporter = OTLPSpanExporter(
-    endpoint="http://localhost:4317",  # ← Endpoint do Collector
+    endpoint="http://localhost:4317",  # ← Collector endpoint
     insecure=True,
 )
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-# PASSO 2.4: Adicionar Processador de Spans
+# STEP 2.4: Add the Span Processor
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 span_processor = BatchSpanProcessor(otlp_exporter)
 tracer_provider.add_span_processor(span_processor)
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-# PASSO 2.5: Ativar Provider
+# STEP 2.5: Activate the Provider
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 trace.set_tracer_provider(tracer_provider)
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-# PASSO 2.6: Auto-instrumentar Flask e Requests
+# STEP 2.6: Auto instrument Flask and Requests
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-FlaskInstrumentor().instrument()     # 🔥 Instrumenta Flask
-RequestsInstrumentor().instrument()  # 🔥 Instrumenta HTTP requests
+FlaskInstrumentor().instrument()     # 🔥 Instruments Flask
+RequestsInstrumentor().instrument()  # 🔥 Instruments HTTP requests
 
-print("⚡ OpenTelemetry iniciado")
+print("⚡ OpenTelemetry initialized")
 ```
 
 ---
 
-### 📍 PASSO 3: Importar ANTES do Flask
+### 📍 STEP 3: Import BEFORE Flask
 
-**ONDE:** `app.py` (primeira linha!)
+**WHERE:** `app.py` (first line!)
 
-**O QUE FAZER:**
+**WHAT:**
 
 ```python
 # app.py
-import instrumentation  # ← PRIMEIRA LINHA! ANTES DO FLASK!
+import instrumentation  # ← FIRST LINE! BEFORE FLASK!
 
-from flask import Flask  # ← Agora sim, Flask
+from flask import Flask  # ← Only now import Flask
 
 app = Flask(__name__)
 
@@ -449,100 +449,100 @@ if __name__ == '__main__':
     app.run(port=5000)
 ```
 
-**ORDEM IMPORTANTÍSSIMA:**
+**CRITICAL ORDER:**
 
 ```python
-# ✅ CORRETO
-import instrumentation  # 1. Instrumentação PRIMEIRO
-from flask import Flask # 2. Flask DEPOIS
+# ✅ CORRECT
+import instrumentation  # 1. Instrumentation FIRST
+from flask import Flask # 2. Flask AFTER
 
-# ❌ ERRADO
-from flask import Flask       # Flask primeiro
-import instrumentation        # Tarde demais!
+# ❌ WRONG
+from flask import Flask  # Flask first
+import instrumentation   # Too late!
 ```
 
 ---
 
-### 📍 PASSO 4: Executar e Verificar
+### 📍 STEP 4: Run and Validate
 
-**EXECUTAR:**
+**RUN:**
 ```bash
 python app.py
 ```
 
-**TESTAR:**
+**TEST:**
 ```bash
 curl http://localhost:5000/users
 ```
 
-**VERIFICAR NO SIGNOZ:**
-- Acesse http://localhost:8080
-- Veja os traces!
+**CHECK IN SIGNOZ:**
+- Visit http://localhost:8080  
+- Inspect the traces!
 
 ---
 
-## Como Funciona na Prática
+## How It Works in Practice
 
-### 🔄 Fluxo Completo de um Request
+### 🔄 Full Request Flow
 
 ```
-1. Request chega
+1. Request arrives
    └─→ GET /users
        │
-2. OpenTelemetry cria TRACE
+2. OpenTelemetry creates a TRACE
    └─→ Trace ID: abc123...
        │
-3. OpenTelemetry cria SPAN para request HTTP
+3. OpenTelemetry creates an HTTP REQUEST SPAN
    └─→ Span: "GET /users"
        ├─ http.method: GET
        ├─ http.route: /users
        ├─ http.status_code: 200
-       └─ duration: 45ms
+       └─ duration: 45 ms
        │
-4. Seu código executa (instrumentado automaticamente)
-   └─→ Se chamar DB, cria outro SPAN
+4. Your code runs (auto instrumented)
+   └─→ If DB is called, another SPAN is created
        └─→ Span: "SELECT * FROM users"
-           └─ duration: 30ms
+           └─ duration: 30 ms
        │
-5. Response enviada
-   └─→ Span finalizado
+5. Response is sent
+   └─→ Span is finished
        │
-6. Dados enviados para Otel Collector
+6. Data is sent to the OTel Collector
    └─→ OTLP gRPC → localhost:4317
        │
-7. Collector processa e envia para ClickHouse
-   └─→ Dados armazenados
+7. Collector processes and stores in ClickHouse
+   └─→ Data persisted
        │
-8. SigNoz UI mostra o trace
-   └─→ Você vê no dashboard!
+8. SigNoz UI displays the trace
+   └─→ You inspect it on the dashboard!
 ```
 
-### 📊 O Que Você Vê no SigNoz
+### 📊 What You See in SigNoz
 
-**Trace completo:**
+**Full trace:**
 ```
-GET /users                     [200] 45ms
-├─ express.middleware          5ms
-├─ express.request_handler     40ms
-│  └─ db.query                 30ms
+GET /users                     [200] 45 ms
+├─ express.middleware          5 ms
+├─ express.request_handler     40 ms
+│  └─ db.query                 30 ms
 │     └─ SELECT * FROM users
-└─ express.response            < 1ms
+└─ express.response            < 1 ms
 ```
 
 ---
 
-## Instrumentação Manual vs Automática
+## Manual vs Automatic Instrumentation
 
-### 🤖 Auto-Instrumentação (Recomendado)
+### 🤖 Automatic Instrumentation (Recommended)
 
-**O que é:** OpenTelemetry instrumenta bibliotecas automaticamente
+**What:** OpenTelemetry instruments libraries automatically
 
-**Vantagens:**
-- ✅ Não precisa modificar código
-- ✅ Cobre casos comuns (HTTP, DB, cache)
-- ✅ Rápido de implementar
+**Benefits:**
+- ✅ No code changes required
+- ✅ Covers common cases (HTTP, DB, cache)
+- ✅ Fast to implement
 
-**Bibliotecas suportadas:**
+**Supported libraries include:**
 - HTTP/HTTPS
 - Express, Koa, Fastify (Node.js)
 - Flask, Django, FastAPI (Python)
@@ -551,45 +551,45 @@ GET /users                     [200] 45ms
 - GraphQL
 - gRPC
 
-### ✋ Instrumentação Manual
+### ✋ Manual Instrumentation
 
-**Quando usar:** Para operações específicas do seu negócio
+**When:** For business-specific operations
 
-**Exemplo Node.js:**
+**Node.js example:**
 ```javascript
-const { trace } = require('@opentelemetry/api');
+const { trace, SpanStatusCode } = require('@opentelemetry/api');
 
 app.get('/process-payment', async (req, res) => {
-  const tracer = trace.getTracer('minha-app');
-  
-  // Criar span customizado
-  const span = tracer.startSpan('processar_pagamento');
-  
+  const tracer = trace.getTracer('my-app');
+
+  // Create custom span
+  const span = tracer.startSpan('process_payment');
+
   try {
-    // Adicionar atributos customizados
+    // Add custom attributes
     span.setAttribute('payment.amount', 100.00);
-    span.setAttribute('payment.currency', 'BRL');
+    span.setAttribute('payment.currency', 'USD');
     span.setAttribute('user.id', '123');
-    
-    // Sua lógica
+
+    // Your logic
     await processPayment();
-    
+
     span.setStatus({ code: SpanStatusCode.OK });
   } catch (error) {
-    span.setStatus({ 
+    span.setStatus({
       code: SpanStatusCode.ERROR,
-      message: error.message 
+      message: error.message,
     });
     throw error;
   } finally {
-    span.end();  // SEMPRE finalizar!
+    span.end();  // ALWAYS end the span!
   }
-  
+
   res.json({ status: 'ok' });
 });
 ```
 
-**Exemplo Python:**
+**Python example:**
 ```python
 from opentelemetry import trace
 
@@ -597,73 +597,73 @@ tracer = trace.get_tracer(__name__)
 
 @app.route('/process-payment')
 def process_payment():
-    # Criar span customizado
-    with tracer.start_as_current_span("processar_pagamento") as span:
-        # Adicionar atributos
+    # Create custom span
+    with tracer.start_as_current_span("process_payment") as span:
+        # Add attributes
         span.set_attribute("payment.amount", 100.00)
-        span.set_attribute("payment.currency", "BRL")
-        
-        # Sua lógica
+        span.set_attribute("payment.currency", "USD")
+
+        # Your logic
         result = process_payment_logic()
-        
+
         return {'status': 'ok'}
 ```
 
 ---
 
-## Adaptando para Sua Aplicação
+## Adapting It to Your App
 
-### ✅ Checklist de Instrumentação
+### ✅ Instrumentation Checklist
 
-1. **Identificar stack tecnológico**
-   - [ ] Linguagem: Node.js, Python, Go, Java?
+1. **Identify your stack**
+   - [ ] Language: Node.js, Python, Go, Java?
    - [ ] Framework: Express, Flask, Spring?
-   - [ ] Banco de dados: PostgreSQL, MongoDB?
+   - [ ] Database: PostgreSQL, MongoDB?
    - [ ] Cache: Redis, Memcached?
 
-2. **Instalar dependências**
-   - [ ] SDK OpenTelemetry
-   - [ ] Auto-instrumentações para seu stack
-   - [ ] Exportador OTLP
+2. **Install dependencies**
+   - [ ] OpenTelemetry SDK
+   - [ ] Auto instrumentations for your stack
+   - [ ] OTLP exporter
 
-3. **Criar instrumentation file**
-   - [ ] Configurar recurso (SERVICE_NAME)
-   - [ ] Configurar exportador (endpoint)
-   - [ ] Habilitar auto-instrumentações
+3. **Create the instrumentation file**
+   - [ ] Configure the resource (`SERVICE_NAME`)
+   - [ ] Configure the exporter (endpoint)
+   - [ ] Enable auto instrumentations
 
-4. **Carregar ANTES da aplicação**
+4. **Load BEFORE your application**
    - [ ] Node.js: `-r ./instrumentation.js`
-   - [ ] Python: `import instrumentation` (primeira linha)
+   - [ ] Python: `import instrumentation` (first line)
 
-5. **Testar**
-   - [ ] Executar aplicação
-   - [ ] Fazer requests
-   - [ ] Ver traces no SigNoz
+5. **Test**
+   - [ ] Run the app
+   - [ ] Send requests
+   - [ ] Inspect traces in SigNoz
 
-### 🎯 Onde Instrumentar?
+### 🎯 Where Should You Instrument?
 
-**Prioridades:**
+**Priorities:**
 
-1. **Alta prioridade (sempre instrumentar):**
-   - ✅ Requisições HTTP/API
-   - ✅ Chamadas de banco de dados
-   - ✅ Operações de cache
-   - ✅ Chamadas a APIs externas
+1. **High priority (always instrument):**
+   - ✅ HTTP/API requests
+   - ✅ Database calls
+   - ✅ Cache operations
+   - ✅ External API calls
 
-2. **Média prioridade:**
-   - ⚡ Processamento de filas (RabbitMQ, Kafka)
-   - ⚡ Uploads/downloads de arquivos
-   - ⚡ Operações de autenticação
+2. **Medium priority:**
+   - ⚡ Queue processing (RabbitMQ, Kafka)
+   - ⚡ File uploads/downloads
+   - ⚡ Authentication flows
 
-3. **Baixa prioridade (instrumentar se necessário):**
-   - 📝 Operações de filesystem
-   - 📝 Cálculos internos
-   - 📝 Manipulação de strings
+3. **Low priority (only if needed):**
+   - 📝 File system operations
+   - 📝 Internal calculations
+   - 📝 String manipulation
 
-### 📝 Exemplo Completo Real
+### 📝 Real-Life Reusable Example
 
 ```javascript
-// instrumentation.js (mesmo para qualquer app Node.js)
+// instrumentation.js (works for any Node.js app)
 const { NodeSDK } = require('@opentelemetry/sdk-node');
 const { getNodeAutoInstrumentations } = require('@opentelemetry/auto-instrumentations-node');
 const { OTLPTraceExporter } = require('@opentelemetry/exporter-trace-otlp-grpc');
@@ -686,17 +686,17 @@ sdk.start();
 process.on('SIGTERM', () => sdk.shutdown());
 ```
 
-Agora pode usar em QUALQUER aplicação Node.js! 🚀
+You can reuse this in ANY Node.js application! 🚀
 
 ---
 
-## 📚 Resumo
+## 📚 Summary
 
-1. **Instalar** dependências OpenTelemetry
-2. **Criar** arquivo `instrumentation.js/py`
-3. **Configurar** recurso e exportador
-4. **Carregar ANTES** da aplicação
-5. **Pronto!** Tudo instrumentado automaticamente
+1. **Install** OpenTelemetry dependencies  
+2. **Create** `instrumentation.js/py`  
+3. **Configure** the resource and exporter  
+4. **Load it BEFORE** your application  
+5. **Done!** Your app is instrumented automatically
 
-**A mágica é:** Você NÃO precisa modificar seu código! 🎉
+**The magic is:** You don’t need to modify your application code! 🎉
 

@@ -1,22 +1,27 @@
 """
-⚡ INSTRUMENTAÇÃO OPEN TELEMETRY PARA SIGNOZ - PYTHON
+⚡ OPENTELEMETRY INSTRUMENTATION FOR SIGNOZ – PYTHON
 
-Este módulo configura automaticamente a coleta de:
-- Traces (rastreamento de requisições)
-- Métricas (performance, contadores)
-- Logs (eventos da aplicação)
+This module automatically configures collection of:
+- Traces (request lifecycles)
+- Metrics (performance counters)
+- Logs (application events)
 
-Quando importado antes da aplicação Flask, ele:
-1. Configura o SDK do OpenTelemetry
-2. Habilita auto-instrumentação de bibliotecas populares
-3. Exporta os dados para o SigNoz via Otel Collector
+When imported before the Flask app it:
+1. Boots the OpenTelemetry SDK
+2. Enables auto-instrumentation for popular libraries
+3. Ships telemetry to SigNoz through the OTel Collector
 """
 
 import logging
 from opentelemetry import trace
 from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
 from opentelemetry.exporter.otlp.proto.grpc.metric_exporter import OTLPMetricExporter
-from opentelemetry.sdk.resources import Resource, SERVICE_NAME, SERVICE_VERSION, DEPLOYMENT_ENVIRONMENT
+from opentelemetry.sdk.resources import (
+    Resource,
+    SERVICE_NAME,
+    SERVICE_VERSION,
+    DEPLOYMENT_ENVIRONMENT,
+)
 from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.sdk.trace.export import BatchSpanProcessor
 from opentelemetry.sdk.metrics import MeterProvider
@@ -27,121 +32,107 @@ from opentelemetry.instrumentation.requests import RequestsInstrumentor
 
 def setup_instrumentation():
     """
-    🔧 CONFIGURA O OPEN TELEMETRY SDK
+    🔧 Configure the OpenTelemetry SDK.
     """
-    
+
     # ----------------------------------------------------------------------------
-    # RECURSO: Identifica sua aplicação
+    # RESOURCE METADATA – identifies this service
     # ----------------------------------------------------------------------------
     resource = Resource.create({
         SERVICE_NAME: "signoz-example-python",
         SERVICE_VERSION: "1.0.0",
         DEPLOYMENT_ENVIRONMENT: "development",
     })
-    
+
     # ----------------------------------------------------------------------------
-    # CONFIGURAÇÃO DE TRACES
+    # TRACE CONFIGURATION
     # ----------------------------------------------------------------------------
-    
-    # Provider de Traces: Gerencia e coleta traces
+
     tracer_provider = TracerProvider(resource=resource)
-    
-    # Exportador de Traces: Envia traces para o SigNoz
+
     otlp_trace_exporter = OTLPSpanExporter(
-        endpoint="http://localhost:4317",  # Endpoint do Otel Collector
-        insecure=True,  # Por padrão é HTTP, não HTTPS
+        endpoint="http://localhost:4317",  # OTel Collector endpoint
+        insecure=True,
     )
-    
-    # Processador de Spans: Agrupa spans em batches para envio eficiente
+
     span_processor = BatchSpanProcessor(otlp_trace_exporter)
     tracer_provider.add_span_processor(span_processor)
-    
-    # Ativa o provider de traces
+
     trace.set_tracer_provider(tracer_provider)
-    
+
     # ----------------------------------------------------------------------------
-    # CONFIGURAÇÃO DE MÉTRICAS
+    # METRIC CONFIGURATION
     # ----------------------------------------------------------------------------
-    
-    # Exportador de Métricas
+
     otlp_metric_exporter = OTLPMetricExporter(
         endpoint="http://localhost:4317",
         insecure=True,
     )
-    
-    # Leitor de Métricas: Exporta métricas periodicamente (a cada 60s)
+
     metric_reader = PeriodicExportingMetricReader(
         otlp_metric_exporter,
-        export_interval_millis=60000,  # 60 segundos
+        export_interval_millis=60000,  # 60 seconds
     )
-    
-    # Provider de Métricas
+
     meter_provider = MeterProvider(
         resource=resource,
         metric_readers=[metric_reader],
     )
-    
-    # Nota: O SDK padrão do Python não expõe um global MeterProvider facilmente
-    # Para métricas customizadas, você criaria assim:
-    # from opentelemetry import metrics
-    # metrics.set_meter_provider(meter_provider)
-    
+    # Note: The default Python SDK requires explicit registration to use this
+    # meter provider for custom metrics. For simplicity we rely on auto-instrumented metrics.
+
     # ----------------------------------------------------------------------------
-    # AUTO-INSTRUMENTAÇÃO
+    # AUTO-INSTRUMENTATION
     # ----------------------------------------------------------------------------
-    
-    # Flask: Instrumenta automaticamente todas as rotas
+
     FlaskInstrumentor().instrument()
-    
-    # Requests: Instrumenta chamadas HTTP externas
     RequestsInstrumentor().instrument()
-    
+
     # ----------------------------------------------------------------------------
     # LOGGING
     # ----------------------------------------------------------------------------
-    
-    # Configura logs do OpenTelemetry
+
     logging.basicConfig(
         level=logging.INFO,
         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
     )
-    
+
     # ----------------------------------------------------------------------------
-    # SUCESSO!
+    # SUCCESS MESSAGE
     # ----------------------------------------------------------------------------
-    
-    print("⚡ OpenTelemetry SDK inicializado")
-    print("📊 Enviando traces e métricas para: http://localhost:4317")
-    print("🔍 Dados aparecerão no SigNoz em: http://localhost:8080\n")
+
+    print("⚡ OpenTelemetry SDK initialized")
+    print("📊 Sending traces and metrics to: http://localhost:4317")
+    print("🔍 View telemetry at: http://localhost:8080\n")
 
 
 # ----------------------------------------------------------------------------
-# IMPORTANTE: Execute a configuração quando o módulo é importado
+# IMPORTANT: Execute setup when the module is imported
 # ----------------------------------------------------------------------------
 setup_instrumentation()
 
 
 """
-📚 CONCEITOS IMPORTANTES:
+📚 KEY CONCEPTS
 
-1. TRACE: Rastreia uma requisição HTTP única através do sistema
-2. SPAN: Cada operação dentro de um trace (ex: chamada DB, API externa)
-3. METRIC: Valores numéricos medidos ao longo do tempo
-4. ATTRIBUTE: Metadados anexados a traces/spans
-5. CONTEXT: Propaga informações através de diferentes serviços
+1. TRACE: Tracks a single request through your system
+2. SPAN: A timed unit of work within a trace (DB call, external API, etc.)
+3. METRIC: Numeric measurements collected over time
+4. ATTRIBUTE: Metadata attached to spans/traces
+5. CONTEXT: Propagates tracing information across service boundaries
 
-🎯 O QUE VOCÊ GANHA:
+🎯 WHAT YOU GAIN
 
-- 🔍 Traces: Veja exatamente como cada requisição flui pela aplicação
-- 📊 Métricas: Monitore performance, erros, throughput
-- 🐛 Debug: Identifique gargalos e erros rapidamente
-- 📈 Alertas: Configure alertas automáticos
+- 🔍 Traces: Observe exactly how each request flows through the app
+- 📊 Metrics: Monitor performance, throughput, and errors
+- 🐛 Debugging: Quickly pinpoint bottlenecks or failures
+- 📈 Alerting: Build automated alerts in SigNoz
 
-🚀 PRÓXIMOS PASSOS:
+🚀 NEXT STEPS
 
-1. Execute: pip install -r requirements.txt
-2. Execute: python app.py
-3. Acesse: http://localhost:8080 (SigNoz)
-4. Explore os dados em tempo real!
+1. pip install -r requirements.txt
+2. python app.py
+3. Visit http://localhost:8080 (SigNoz UI)
+4. Generate traffic and explore real-time telemetry!
 """
 
