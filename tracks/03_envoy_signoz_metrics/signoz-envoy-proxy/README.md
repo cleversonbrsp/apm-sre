@@ -2,7 +2,9 @@
 
 Este laboratório guia você a configurar a coleta de **métricas do Envoy Proxy** usando **OpenTelemetry** e **SigNoz**, seguindo a documentação oficial do dashboard Envoy do SigNoz (`envoy-otlp-v1.json`) descrita em [`SigNoz/dashboards/envoy`](https://github.com/SigNoz/dashboards/tree/main/envoy).
 
-O foco é:
+**Se você usa cluster Kind e quer SigNoz em Docker no host (passo a passo didático):** use o [GUIA-ENVOY-SIGNOZ-KIND.md](../GUIA-ENVOY-SIGNOZ-KIND.md) nesta trilha. Ele cobre SigNoz em Docker, `extraHosts` no Kind e o uso do arquivo `k8s/otel-collector-signoz-selfhosted.yaml`.
+
+O foco deste README é:
 
 - **Configurar um OpenTelemetry Collector** recebendo métricas OTLP do Envoy.
 - **Configurar o Envoy** para enviar métricas via `envoy.stat_sinks.open_telemetry`.
@@ -35,7 +37,8 @@ Se você estiver usando SigNoz self-hosted, haverá anotações específicas na 
 Todos os arquivos ficam em `tracks/03_envoy_signoz_metrics/signoz-envoy-proxy/` neste repositório:
 
 - `README.md` (este arquivo): roteiro completo do laboratório.
-- `k8s/otel-collector.yaml`: deployment + config do OpenTelemetry Collector.
+- `k8s/otel-collector.yaml`: Collector para **SigNoz Cloud** (endpoint + ingestion key).
+- `k8s/otel-collector-signoz-selfhosted.yaml`: Collector para **SigNoz self-hosted** (ex.: Docker no host; envia para `host.docker.internal:4317`).
 - `k8s/envoy-configmap.yaml`: configuração do Envoy com stats sink OpenTelemetry.
 - `k8s/envoy-deployment.yaml`: deployment + service de um Envoy frontando um backend simples.
 
