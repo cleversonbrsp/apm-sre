@@ -2,7 +2,9 @@
 
 Este laboratório guia você a configurar a coleta de **métricas do Envoy Proxy** usando **OpenTelemetry** e **SigNoz**, seguindo a documentação oficial do dashboard Envoy do SigNoz (`envoy-otlp-v1.json`) descrita em [`SigNoz/dashboards/envoy`](https://github.com/SigNoz/dashboards/tree/main/envoy).
 
-**Se você usa cluster Kind e quer SigNoz em Docker no host (passo a passo didático):** use o [GUIA-ENVOY-SIGNOZ-KIND.md](../GUIA-ENVOY-SIGNOZ-KIND.md) nesta trilha. Ele cobre SigNoz em Docker, `extraHosts` no Kind e o uso do arquivo `k8s/otel-collector-signoz-selfhosted.yaml`.
+**Por que Envoy + OTel + SigNoz?** O Envoy expõe métricas no formato OTLP (padrão OpenTelemetry). O OpenTelemetry Collector recebe essas métricas e pode enviá-las para backends como o SigNoz (que armazena e oferece dashboards). Assim você não precisa escrever um exportador customizado; usa o ecossistema OTLP de ponta a ponta.
+
+**Se você usa cluster Kind e quer SigNoz em Docker no host (passo a passo didático):** use o [GUIA-ENVOY-SIGNOZ-KIND.md](../GUIA-ENVOY-SIGNOZ-KIND.md) nesta trilha. Ele cobre SigNoz em Docker e o uso do arquivo `k8s/otel-collector-signoz-selfhosted.yaml` (envio para o IP do host, ex.: 172.17.0.1:4317), com explicações do porquê de cada passo.
 
 O foco deste README é:
 
@@ -38,7 +40,7 @@ Todos os arquivos ficam em `tracks/03_envoy_signoz_metrics/signoz-envoy-proxy/` 
 
 - `README.md` (este arquivo): roteiro completo do laboratório.
 - `k8s/otel-collector.yaml`: Collector para **SigNoz Cloud** (endpoint + ingestion key).
-- `k8s/otel-collector-signoz-selfhosted.yaml`: Collector para **SigNoz self-hosted** (ex.: Docker no host; envia para `host.docker.internal:4317`).
+- `k8s/otel-collector-signoz-selfhosted.yaml`: Collector para **SigNoz self-hosted** (ex.: Docker no host; envia para o IP do host na rede Docker, ex.: `172.17.0.1:4317`).
 - `k8s/envoy-configmap.yaml`: configuração do Envoy com stats sink OpenTelemetry.
 - `k8s/envoy-deployment.yaml`: deployment + service de um Envoy frontando um backend simples.
 

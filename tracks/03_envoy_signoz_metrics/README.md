@@ -1,6 +1,12 @@
 # Track 3 – Envoy + SigNoz Metrics
 
-Conteúdo para aprender a **coletar métricas do Envoy Proxy** e visualizá-las no **SigNoz** usando OpenTelemetry. O foco é didático e objetivo: passo a passo com Kind e SigNoz em Docker.
+Conteúdo para aprender a **coletar métricas do Envoy Proxy** e visualizá-las no **SigNoz** usando OpenTelemetry. O foco é didático: cada passo explica o **porquê**, não só o “como”.
+
+---
+
+## Por que Envoy + SigNoz?
+
+O **Envoy** é um proxy que gera muitas métricas úteis (requisições, latência, erros por upstream). Sozinho, ele só as exporta em OTLP; não armazena nem mostra gráficos. O **SigNoz** é uma plataforma de observabilidade que aceita OTLP, armazena em ClickHouse e oferece dashboards prontos (incluindo um para Envoy). Conectar os dois permite ver o comportamento do proxy em tempo quase real sem escrever queries do zero. O **OpenTelemetry Collector** no meio recebe as métricas do Envoy e as envia ao SigNoz — ele é a “ponte” que permite colocar o SigNoz fora do cluster (ex.: Docker no host) enquanto o Envoy roda dentro.
 
 ---
 
@@ -24,7 +30,7 @@ SREs e engenheiros de plataforma que querem monitorar Envoy (ou proxies similare
 1. **Guia passo a passo (Kind + SigNoz em Docker)**  
    Siga o [GUIA-ENVOY-SIGNOZ-KIND.md](GUIA-ENVOY-SIGNOZ-KIND.md). Ele cobre:
    - Subir SigNoz em Docker no host.
-   - Configurar o Kind para acessar o host (`extraHosts`).
+   - Confirmar o IP do host para o Collector (ex.: 172.17.0.1; não é necessário alterar o kind-cluster.yaml).
    - Deploy no Kind: OTel Collector, Envoy, httpbin.
    - Gerar tráfego e ver métricas no SigNoz.
    - (Opcional) SigNoz no próprio Kind via Helm.
@@ -50,4 +56,4 @@ Se você usa o repositório **kind-complete-stack** em:
 
 `/home/cleverson/Documents/crs/crs-repos/kind-complete-stack`
 
-o guia [GUIA-ENVOY-SIGNOZ-KIND.md](GUIA-ENVOY-SIGNOZ-KIND.md) mostra como adicionar `extraHosts` no `kind-cluster.yaml` e recriar o cluster com `make rebuild`, para que os pods consigam enviar métricas ao SigNoz rodando em Docker no host.
+o guia [GUIA-ENVOY-SIGNOZ-KIND.md](GUIA-ENVOY-SIGNOZ-KIND.md) mostra como usar o Collector configurado para o IP do host (ex.: 172.17.0.1:4317), sem precisar alterar o kind-cluster.yaml.

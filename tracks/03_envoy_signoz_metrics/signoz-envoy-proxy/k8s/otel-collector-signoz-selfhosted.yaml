@@ -1,5 +1,13 @@
-# OpenTelemetry Collector que envia métricas para SigNoz self-hosted
-# (SigNoz rodando em Docker no host; use com kind + extraHosts host.docker.internal)
+# OpenTelemetry Collector que envia métricas para SigNoz self-hosted (Docker no host).
+#
+# Por que esse arquivo existe?
+# - O Envoy envia métricas OTLP para um endpoint (no nosso caso, o Service deste Collector).
+# - O Collector precisa reenviar essas métricas para o SigNoz. Se o SigNoz está em Docker no host,
+#   os pods do Kind não resolvem "localhost"; eles precisam do IP do host na rede Docker.
+# - No Linux, a bridge docker0 costuma ter o IP 172.17.0.1; esse é o endereço do host visto de
+#   dentro dos containers/pods. Por isso o endpoint abaixo usa 172.17.0.1:4317.
+# - Se a sua bridge tiver outro IP, altere o valor em "endpoint" e reaplique o ConfigMap.
+#
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -7,20 +15,23 @@ metadata:
   namespace: observability
 data:
   config.yaml: |
+    # Recebe métricas OTLP gRPC do Envoy (e de qualquer cliente que apontar para este Service).
     receivers:
       otlp:
         protocols:
           grpc:
             endpoint: 0.0.0.0:4317
 
+    # Agrupa métricas em lotes para reduzir o número de chamadas ao SigNoz.
     processors:
       batch:
         timeout: 10s
         send_batch_size: 1024
 
+    # Envia para o SigNoz no host. insecure: true porque em ambiente local não usamos TLS.
     exporters:
       otlp:
-        endpoint: "host.docker.internal:4317"
+        endpoint: "172.17.0.1:4317"
         tls:
           insecure: true
 
