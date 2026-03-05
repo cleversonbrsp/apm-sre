@@ -32,7 +32,7 @@ Se você estiver usando SigNoz self-hosted, haverá anotações específicas na 
 
 ## 2. Estrutura de arquivos deste laboratório
 
-Todos os arquivos ficam em `signoz-envoy-proxy/` neste repositório:
+Todos os arquivos ficam em `tracks/03_envoy_signoz_metrics/signoz-envoy-proxy/` neste repositório:
 
 - `README.md` (este arquivo): roteiro completo do laboratório.
 - `k8s/otel-collector.yaml`: deployment + config do OpenTelemetry Collector.
@@ -155,7 +155,7 @@ spec:
 ### 4.2. Aplicar o Collector
 
 ```bash
-kubectl apply -f signoz-envoy-proxy/k8s/otel-collector.yaml
+kubectl apply -f tracks/03_envoy_signoz_metrics/signoz-envoy-proxy/k8s/otel-collector.yaml
 kubectl get pods -n observability -l app=otel-collector
 ```
 
@@ -378,9 +378,9 @@ spec:
 ### 6.3. Aplicar backend e Envoy
 
 ```bash
-kubectl apply -f signoz-envoy-proxy/k8s/backend-httpbin.yaml
-kubectl apply -f signoz-envoy-proxy/k8s/envoy-configmap.yaml
-kubectl apply -f signoz-envoy-proxy/k8s/envoy-deployment.yaml
+kubectl apply -f tracks/03_envoy_signoz_metrics/signoz-envoy-proxy/k8s/backend-httpbin.yaml
+kubectl apply -f tracks/03_envoy_signoz_metrics/signoz-envoy-proxy/k8s/envoy-configmap.yaml
+kubectl apply -f tracks/03_envoy_signoz_metrics/signoz-envoy-proxy/k8s/envoy-deployment.yaml
 
 kubectl get pods -n observability -l app=httpbin
 kubectl get pods -n observability -l app=envoy

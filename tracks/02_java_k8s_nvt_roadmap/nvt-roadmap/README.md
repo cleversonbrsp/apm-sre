@@ -24,7 +24,7 @@ After completing the chapters and labs, you will be able to operate, debug, and 
 
 - Access to the workspace repository (local clone of internal repositories, at your path).
 - Basic knowledge of: HTTP, REST, Kubernetes concepts (Pod, Deployment, Service).
-- Completed (or reference) the **SRE Study Guide** chapters in `../chapters/` (HTTP, Observability, APM SigNoz, SRE Best Practices).
+- Completed (or reference) the **SRE Study Guide** chapters in `../../01_http_observability_basics/chapters/` (HTTP, Observability, APM SigNoz, SRE Best Practices).
 - Local tools (for labs): Docker, `kubectl` (optional: kind/minikube), Maven 3.x, Java 17+.
 
 ---
