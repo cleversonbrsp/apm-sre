@@ -1,37 +1,37 @@
 # Labs – NVT Roadmap
 
-Laboratórios práticos para consolidar o conhecimento SRE no ambiente de referência (Java, Kubernetes, Config Server, OpenTelemetry, SigNoz, pipelines). Nomes e caminhos foram generalizados para não expor a empresa.
+Hands-on labs to consolidate SRE knowledge in the reference environment (Java, Kubernetes, Config Server, OpenTelemetry, SigNoz, pipelines). Names and paths have been generalized to avoid exposing the company.
 
 ---
 
-## Lista de labs
+## Lab list
 
-| Lab | Tema | Pré-requisitos |
-|-----|------|----------------|
-| [Lab 01](lab-01-deploy-e-config-server.md) | Fluxo de deploy e Config Server | Leitura dos capítulos 00 e 01 do nvt-roadmap |
-| [Lab 02](lab-02-java-kubernetes-recursos-health.md) | Java no Kubernetes: recursos, JVM e health checks | Lab 01 (recomendado); Docker, kubectl |
-| [Lab 03](lab-03-opentelemetry-signoz-java.md) | OpenTelemetry + SigNoz com aplicação Java | Lab 02; Docker (e opcionalmente cluster K8s) |
-| [Lab 04](lab-04-troubleshooting-logs-dumps-metricas.md) | Troubleshooting: logs, dumps e métricas | Labs 01–03; kubectl se usar cluster real |
-| [Lab 05](lab-05-pipelines-e-manifestos-k8s.md) | Pipelines e manifestos Kubernetes | Acesso ao repo da aplicação e ao repo de manifestos K8s |
-
----
-
-## Como usar
-
-1. **Ordem:** fazer na sequência 01 → 05 para melhor aproveitamento.
-2. **Ambiente:** onde o lab pedir “no repositório de trabalho”, use o clone local dos repositórios internos (no caminho que você usar).
-3. **Cluster:** labs que usam Kubernetes podem ser feitos com **kind**, **minikube** ou um OKE de dev/homolog, conforme indicado em cada lab.
-4. **Tempo:** cada lab pode levar de 30 min a 1h30; reserve tempo para ler os “Por quê?” e fazer as tarefas opcionais.
+| Lab | Topic | Prerequisites |
+|-----|--------|----------------|
+| [Lab 01](lab-01-deploy-and-config-server.md) | Deploy flow and Config Server | Read chapters 00 and 01 of nvt-roadmap |
+| [Lab 02](lab-02-java-kubernetes-resources-health.md) | Java on Kubernetes: resources, JVM and health checks | Lab 01 (recommended); Docker, kubectl |
+| [Lab 03](lab-03-opentelemetry-signoz-java.md) | OpenTelemetry + SigNoz with Java application | Lab 02; Docker (and optionally K8s cluster) |
+| [Lab 04](lab-04-troubleshooting-logs-dumps-metrics.md) | Troubleshooting: logs, dumps and metrics | Labs 01–03; kubectl if using real cluster |
+| [Lab 05](lab-05-pipelines-and-k8s-manifests.md) | Pipelines and Kubernetes manifests | Access to app repo and K8s manifests repo |
 
 ---
 
-## Estrutura típica de um lab
+## How to use
 
-- **Objetivo** – O que você vai aprender.
-- **Pré-requisitos** – Ferramentas e conhecimento.
-- **Passos** – Instruções numeradas.
-- **Verificação** – Como conferir se deu certo.
-- **Tarefas opcionais** – Aprofundamento.
-- **Referências** – Links para capítulos e documentos NVT.
+1. **Order:** do them in sequence 01 → 05 for best results.
+2. **Environment:** when the lab says “workspace repository”, use your local clone of internal repositories (at your path).
+3. **Cluster:** labs that use Kubernetes can be done with **kind**, **minikube**, or an OKE dev/staging cluster, as indicated in each lab.
+4. **Time:** each lab may take 30 min to 1h30; allow time to read the “Why?” sections and do optional tasks.
 
-Ao terminar os cinco labs, use o [checklist SRE](../02_sre_checklist_java_k8s.md) e os [exercícios](../exercicios/exercicios-nvt-roadmap.md) para fixar o conteúdo.
+---
+
+## Typical lab structure
+
+- **Objective** – What you will learn.
+- **Prerequisites** – Tools and knowledge.
+- **Steps** – Numbered instructions.
+- **Verification** – How to confirm success.
+- **Optional tasks** – Deeper practice.
+- **References** – Links to chapters and internal docs.
+
+When finished with all five labs, use the [SRE checklist](../02_sre_checklist_java_k8s.md) and [exercises](../exercises/exercises-nvt-roadmap.md) to reinforce the content.

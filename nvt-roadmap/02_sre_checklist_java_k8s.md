@@ -1,71 +1,71 @@
-# Checklist SRE – Java no Kubernetes (ambiente NVT)
+# SRE Checklist – Java on Kubernetes
 
-Checklist objetivo para **operações**, **deploy** e **troubleshooting** de aplicações Java (Spring Boot) no Kubernetes, alinhado ao ambiente de referência (nomes e dados sensíveis generalizados).
-
----
-
-## 1. Antes do deploy
-
-- [ ] **Config Server** está no ar e acessível a partir do cluster (URL, rede, DNS).
-- [ ] **Propriedades** do perfil (`CLOUD_PROFILE`) existem no repositório de config-properties e estão corretas (datasource, URLs, feature flags).
-- [ ] **Imagem** foi gerada e enviada ao OCIR com a tag esperada pelo manifesto.
-- [ ] **Secrets** no cluster: `imagePullSecrets` (ocirsecret) no namespace; secrets de app (TLS, DB, etc.) se aplicável.
-- [ ] **Manifestos** em devops-config estão atualizados para o ambiente (imagem, tag, namespace, recursos).
+Objective checklist for **operations**, **deploy**, and **troubleshooting** of Java (Spring Boot) applications on Kubernetes, aligned with the reference environment (names and sensitive data generalized).
 
 ---
 
-## 2. Recursos do container (Java/JVM)
+## 1. Before deploy
 
-- [ ] **Memory limit** do container é maior que o heap máximo da JVM (heap + metaspace + threads + nativo). Evitar OOMKilled.
-- [ ] **JVM:** uso de `-XX:MaxRAMPercentage` / `-XX:InitialRAMPercentage` (Java 10+) ou `-Xmx`/`-Xms` coerentes com o limit (ex.: 70–80% do limit para heap).
-- [ ] **CPU:** requests/limits definidos; ajuste de GC threads se necessário em nós com poucos cores.
-- [ ] **JVM_OPTIONS** no Deployment incluem agente OpenTelemetry e endpoint OTLP quando observabilidade estiver ativa.
+- [ ] **Config Server** is up and reachable from the cluster (URL, network, DNS).
+- [ ] **Properties** for the profile (`CLOUD_PROFILE`) exist in the config-properties repository and are correct (datasource, URLs, feature flags).
+- [ ] **Image** was built and pushed to the registry with the tag expected by the manifest.
+- [ ] **Secrets** in the cluster: `imagePullSecrets` in the namespace; app secrets (TLS, DB, etc.) if applicable.
+- [ ] **Manifests** in the manifests repo are up to date for the environment (image, tag, namespace, resources).
+
+---
+
+## 2. Container resources (Java/JVM)
+
+- [ ] **Memory limit** of the container is greater than the JVM max heap (heap + metaspace + threads + native). Avoid OOMKilled.
+- [ ] **JVM:** use `-XX:MaxRAMPercentage` / `-XX:InitialRAMPercentage` (Java 10+) or `-Xmx`/`-Xms` consistent with the limit (e.g. 70–80% of limit for heap).
+- [ ] **CPU:** requests/limits set; adjust GC threads if needed on nodes with few cores.
+- [ ] **JVM_OPTIONS** in the Deployment include the OpenTelemetry agent and OTLP endpoint when observability is enabled.
 
 ---
 
 ## 3. Health checks (probes)
 
-- [ ] **Liveness** usa endpoint que indica “processo vivo” (ex.: `/portal/health`); timeout e failureThreshold adequados para evitar kill por GC longo.
-- [ ] **Readiness** usa endpoint que indica “pronto para tráfego” (ex.: `/portal/ping` ou dependências leves); não enviar tráfego antes do app estar pronto.
-- [ ] **Startup probe** (se existir) com initialDelaySeconds/period suficientes para a JVM + Spring Boot subirem (ex.: 180s em apps pesadas).
-- [ ] Probes não usam endpoint que dependa de dependência externa lenta (ex.: DB) para liveness, para evitar restart em cascata.
+- [ ] **Liveness** uses an endpoint that indicates “process alive” (e.g. `/portal/health`); timeout and failureThreshold suitable to avoid kill due to long GC.
+- [ ] **Readiness** uses an endpoint that indicates “ready for traffic” (e.g. `/portal/ping` or light dependencies); do not send traffic before the app is ready.
+- [ ] **Startup probe** (if present) with enough initialDelaySeconds/period for JVM + Spring Boot to come up (e.g. 180s for heavy apps).
+- [ ] Probes do not use an endpoint that depends on a slow external dependency (e.g. DB) for liveness, to avoid cascading restarts.
 
 ---
 
-## 4. Config e perfil
+## 4. Config and profile
 
-- [ ] **CLOUD_PROFILE** no Deployment corresponde a um perfil existente no Config Server (ex.: `perfil-hom`, `perfil-prod-oci`).
-- [ ] Variáveis de ambiente sensíveis vêm de **Secrets** (não hardcoded no deployment).
-- [ ] **Bootstrap** do Config Server (keystore, Git URI) está correto quando há criptografia.
-
----
-
-## 5. Observabilidade
-
-- [ ] **OpenTelemetry:** agente na imagem; `JVM_OPTIONS` com `-javaagent` e `Dotel.exporter.otlp.endpoint` apontando para o collector (IP/hostname acessível do Pod).
-- [ ] **SigNoz** (ou backend OTLP) recebendo dados do cluster (collector/agent configurado no cluster-manifest).
-- [ ] **Logs:** aplicação logando em stdout (e em formato consumível, ex.: JSON) para o stack de logging do cluster.
-- [ ] **Métricas:** Actuator/Prometheus expostos apenas internamente (não no Ingress público) quando aplicável.
+- [ ] **CLOUD_PROFILE** in the Deployment matches an existing profile in Config Server (e.g. `profile-staging`, `profile-prod-oci`).
+- [ ] Sensitive environment variables come from **Secrets** (not hardcoded in the deployment).
+- [ ] **Bootstrap** of Config Server (keystore, Git URI) is correct when encryption is used.
 
 ---
 
-## 6. Troubleshooting rápido
+## 5. Observability
 
-- [ ] **Pod não sobe:** `kubectl describe pod`, `kubectl logs`; verificar ImagePullBackOff (OCIR, imagePullSecrets), CrashLoopBackOff (config, Config Server, DB, JVM/startup).
-- [ ] **OOMKilled:** revisar heap vs memory limit; coletar heap dump se política permitir; ajustar `-Xmx`/MaxRAMPercentage.
-- [ ] **Latência alta / timeouts:** traces no SigNoz; métricas de GC e CPU; verificar pool de conexões (DB, HTTP client) e thread pools.
-- [ ] **Liveness matando o pod:** aumentar timeout/failureThreshold ou trocar endpoint; verificar se GC ou startup estão demorando mais que o probe.
-- [ ] **Config não carrega:** Config Server acessível? Perfil correto? Repositório de properties atualizado e acessível pelo Config Server?
-- [ ] **Traces não aparecem:** endpoint OTLP acessível do Pod? Service do collector no mesmo namespace ou DNS correto? Firewall/network policies?
+- [ ] **OpenTelemetry:** agent in the image; `JVM_OPTIONS` with `-javaagent` and `Dotel.exporter.otlp.endpoint` pointing to the collector (IP/hostname reachable from the Pod).
+- [ ] **SigNoz** (or OTLP backend) receiving data from the cluster (collector/agent configured in cluster-manifest).
+- [ ] **Logs:** application logging to stdout (and in a consumable format, e.g. JSON) for the cluster logging stack.
+- [ ] **Metrics:** Actuator/Prometheus exposed only internally (not on public Ingress) when applicable.
 
 ---
 
-## 7. Pipelines e manifestos
+## 6. Quick troubleshooting
 
-- [ ] **Pipeline:** build usa Dockerfile correto (perfil/cliente); tag de imagem alinhada ao que o deployment espera.
-- [ ] **Download de manifestos:** URL do repositório de manifestos (branch/repo) correta; arquivo aplicado é o do ambiente certo (hom/prod/...).
-- [ ] **Pós-apply:** `kubectl get pods -n <namespace>`, `kubectl rollout status deployment/<name> -n <namespace>` para confirmar rollout.
+- [ ] **Pod not starting:** `kubectl describe pod`, `kubectl logs`; check ImagePullBackOff (registry, imagePullSecrets), CrashLoopBackOff (config, Config Server, DB, JVM/startup).
+- [ ] **OOMKilled:** review heap vs memory limit; collect heap dump if policy allows; adjust `-Xmx`/MaxRAMPercentage.
+- [ ] **High latency / timeouts:** traces in SigNoz; GC and CPU metrics; check connection pools (DB, HTTP client) and thread pools.
+- [ ] **Liveness killing the pod:** increase timeout/failureThreshold or change endpoint; check if GC or startup take longer than the probe.
+- [ ] **Config not loading:** Is Config Server reachable? Correct profile? Properties repo updated and reachable by Config Server?
+- [ ] **Traces not showing:** Is OTLP endpoint reachable from the Pod? Collector Service in same namespace or correct DNS? Firewall/network policies?
 
 ---
 
-Use este checklist ao preparar um deploy, ao investigar incidentes e ao revisar mudanças em recursos ou JVM no seu ambiente.
+## 7. Pipelines and manifests
+
+- [ ] **Pipeline:** build uses the correct Dockerfile (profile/client); image tag aligned with what the deployment expects.
+- [ ] **Manifest download:** manifests repo URL (branch/repo) correct; applied file is for the right environment (staging/prod/...).
+- [ ] **Post-apply:** `kubectl get pods -n <namespace>`, `kubectl rollout status deployment/<name> -n <namespace>` to confirm rollout.
+
+---
+
+Use this checklist when preparing a deploy, investigating incidents, and reviewing changes to resources or JVM in your environment.
