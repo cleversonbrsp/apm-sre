@@ -249,6 +249,8 @@ data:
                                 cluster: backend_service
                     http_filters:
                       - name: envoy.filters.http.router
+                        typed_config:
+                          "@type": type.googleapis.com/envoy.extensions.filters.http.router.v3.Router
 
     stats_sinks:
       - name: envoy.stat_sinks.open_telemetry
